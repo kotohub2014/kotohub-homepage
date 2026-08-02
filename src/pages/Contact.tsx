@@ -107,8 +107,7 @@ export default function Contact() {
               <form className="form" onSubmit={handleSubmit} noValidate>
                 {status === 'sent' && (
                   <p className="form__result" role="status">
-                    メールソフトの起動画面に移動します。内容をご確認のうえ、そのまま送信してください。
-                    起動しない場合は、お手数ですが <a href={`mailto:${brand.email}`}>{brand.email}</a> 宛に直接ご連絡ください。
+                    メールソフトの起動画面に移動します。内容をご確認のうえ、そのまま送信してください。起動しない場合は、お手数ですが <a href={`mailto:${brand.email}`}>{brand.email}</a> 宛に直接ご連絡ください。
                   </p>
                 )}
 

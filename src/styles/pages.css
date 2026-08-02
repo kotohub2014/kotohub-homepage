@@ -322,6 +322,143 @@
 }
 
 /* ------------------------------------------------------------------
+   CASE STUDIES
+   ------------------------------------------------------------------ */
+
+.case-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  margin-top: 54px;
+}
+
+/* 事例は4件なので、広い画面では2×2に組んで座りを良くする */
+@media (min-width: 1000px) {
+  .case-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.case-card {
+  height: 100%;
+  padding: 32px 30px 30px;
+}
+
+.case-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 18px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.case-card__industry {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--gold-pale);
+}
+
+.case-card__icon {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  color: var(--gold);
+}
+
+.case-card__no {
+  font-family: var(--font-en);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--gold-deep);
+  white-space: nowrap;
+}
+
+.case-card__title {
+  font-size: clamp(19px, 2.2vw, 23px);
+  font-weight: 700;
+  line-height: 1.55;
+  margin-bottom: 22px;
+}
+
+.case-card__list {
+  margin: 0;
+}
+
+.case-card__term {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--text-faint);
+  margin-bottom: 8px;
+}
+
+.case-card__term::before {
+  content: '';
+  width: 14px;
+  height: 1px;
+  background: currentColor;
+}
+
+.case-card__term--problem {
+  color: #b8867f;
+}
+
+.case-card__term--result {
+  color: var(--gold);
+}
+
+.case-card__desc {
+  margin: 0 0 20px;
+  font-size: 13.6px;
+  line-height: 2.05;
+  color: var(--text-dim);
+}
+
+.case-card__desc--result {
+  color: var(--gold-pale);
+  margin-bottom: 24px;
+}
+
+.case-card__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.case-card__tech-item {
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  background: rgba(212, 175, 55, 0.05);
+  font-family: var(--font-en);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--gold-light);
+}
+
+.case-note {
+  margin-top: 30px;
+  font-size: 12px;
+  line-height: 1.95;
+  color: var(--text-faint);
+  text-align: center;
+  max-width: 74ch;
+  margin-inline: auto;
+}
+
+/* ------------------------------------------------------------------
    SERVICE LIST (home preview + services page)
    ------------------------------------------------------------------ */
 
@@ -1576,5 +1713,88 @@
   }
   .faq__a-inner {
     padding-left: 4px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   モバイル：見出し・リード文のセンタリング
+
+   狭い画面では左揃えの見出しが「左に寄って」見えてバランスを欠くため、
+   見出し・アイキャッチ・導入文は中央揃えにする。
+   一方、長い本文は中央揃えにすると各行の開始位置が揃わず可読性が落ちるため、
+   意図的に左揃えのまま残している。
+   ------------------------------------------------------------------ */
+
+@media (max-width: 760px) {
+  /* --- 見出し・アイキャッチ・導入文だけを中央に揃える --- */
+  .eyebrow,
+  .section-title,
+  .section-lead,
+  .page-head__title,
+  .page-head__lead,
+  .strength__no,
+  .strength__title,
+  .svc-row__no,
+  .svc-row__title,
+  .svc-row__en,
+  .svc-row__icon,
+  .concept__kanji-note {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  /* 左のラインだけでは中央揃え時に非対称になるため、右にも同じ装飾を足す */
+  .eyebrow::after {
+    content: '';
+    width: 34px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  /* Concept セクションの見出し側だけ中央に（本文は左のまま） */
+  .concept > .reveal:first-child {
+    text-align: center;
+  }
+
+  .strength__points {
+    justify-content: center;
+  }
+
+  /* --- ヒーロー --- */
+  .hero__inner {
+    text-align: center;
+  }
+
+  .hero__badge,
+  .hero__lead {
+    margin-inline: auto;
+  }
+
+  .hero__title-sub {
+    padding-left: 0;
+    letter-spacing: 0.3em;
+  }
+
+  .hero__actions {
+    justify-content: center;
+  }
+
+  /* --- 箇条書きは記号の位置がずれるため必ず左揃え --- */
+  .check-list,
+  .dot-list,
+  .svc-row__cols,
+  .info-table,
+  .prose,
+  .timeline,
+  .case-card {
+    text-align: left;
+  }
+
+  .case-card {
+    padding: 26px 22px 24px;
+  }
+
+  .case-grid {
+    margin-top: 40px;
   }
 }

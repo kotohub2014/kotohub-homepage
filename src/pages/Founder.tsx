@@ -32,7 +32,8 @@ export default function Founder() {
               <FounderPhoto />
               <div>
                 <p className="eyebrow">Profile</p>
-                <h1 className="founder-name">{founder.name}</h1>
+                {/* ページのh1は PageHead 側。ここはh2にして見出し階層を保つ */}
+                <h2 className="founder-name">{founder.name}</h2>
                 <p className="founder-name-en">{founder.nameEn}</p>
                 <div className="founder-meta">
                   <span className="pill">{founder.role}</span>

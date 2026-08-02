@@ -86,8 +86,7 @@ export default function Services() {
             <p className="eyebrow">Pricing policy</p>
             <h2 className="section-title">料金の考え方</h2>
             <p className="section-lead">
-              費用は「どこまで作るか」で決まります。KotoHubでは、ご予算をお伺いした上で、
-              その範囲で最も効果の出る範囲を切り出してご提案します。無理に全部を作る必要はありません。
+              費用は「どこまで作るか」で決まります。KotoHubでは、ご予算をお伺いした上で、その範囲で最も効果の出る範囲を切り出してご提案します。無理に全部を作る必要はありません。
             </p>
           </Reveal>
 

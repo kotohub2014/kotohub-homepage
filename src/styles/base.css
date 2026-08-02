@@ -86,6 +86,62 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
+
+  /* 句読点・小書き文字の禁則処理を厳格に適用する */
+  line-break: strict;
+  overflow-wrap: break-word;
+}
+
+/* --- 日本語の折り返し制御 ---------------------------------------------
+   word-break: auto-phrase は文節単位で改行し、
+   「フルスタックエンジニ／ア」のような語中での分断を防ぐ。
+   ただし行末の余白が大きくなるため、見出しや短いリード文にだけ適用する。
+   （長い本文に使うと右端が大きく波打ち、かえって読みにくくなる）
+   未対応ブラウザでは無視されるだけで、レイアウトは崩れない。
+   -------------------------------------------------------------------- */
+h1,
+h2,
+h3,
+h4,
+.hero__title,
+.hero__lead,
+.hero__badge,
+.section-title,
+.section-lead,
+.page-head__title,
+.page-head__lead,
+.cta__title,
+.cta__lead,
+.case-card__title,
+.svc-card__title,
+.prod-card__copy,
+.strength__title,
+.flow__title,
+.benefit__title,
+.value__title,
+.faq__q,
+.pill,
+.stat__label {
+  word-break: auto-phrase;
+}
+
+/* 見出しは行数のバランスを取り、本文は最終行の孤立（泣き別れ）を防ぐ */
+h1,
+h2,
+h3,
+h4,
+.section-title,
+.hero__title,
+.page-head__title,
+.cta__title {
+  text-wrap: balance;
+}
+
+p,
+li,
+dd,
+figcaption {
+  text-wrap: pretty;
 }
 
 body::before {

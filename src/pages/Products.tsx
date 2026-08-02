@@ -91,8 +91,7 @@ export default function Products() {
 
           <Reveal delay={0.1}>
             <p style={{ marginTop: 26, fontSize: 12.5, color: 'var(--text-faint)', lineHeight: 2 }}>
-              ※ 価格はすべて税別の目安です。ご利用人数・データ量・カスタマイズ範囲により変動します。
-              初期費用（環境構築・データ移行・操作説明）は別途お見積りいたします。
+              ※ 価格はすべて税別の目安です。ご利用人数・データ量・カスタマイズ範囲により変動します。初期費用（環境構築・データ移行・操作説明）は別途お見積りいたします。
             </p>
           </Reveal>
         </div>
@@ -105,8 +104,7 @@ export default function Products() {
             <p className="eyebrow">Subscription or Custom</p>
             <h2 className="section-title">サブスクと受託開発、どちらを選ぶか</h2>
             <p className="section-lead">
-              迷ったら、サブスクから始めるのがおすすめです。実際の業務に入れてみて初めて分かる要件が必ずあります。
-              その学びを持ち込めば、受託開発に進んだときの精度が段違いに上がります。
+              迷ったら、サブスクから始めるのがおすすめです。実際の業務に入れてみて初めて分かる要件が必ずあります。その学びを持ち込めば、受託開発に進んだときの精度が段違いに上がります。
             </p>
           </Reveal>
 

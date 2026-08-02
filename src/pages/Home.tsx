@@ -6,7 +6,7 @@ import SpotlightCard from '../components/SpotlightCard';
 import Counter from '../components/Counter';
 import CTA from '../components/CTA';
 import { ArrowRight, ServiceIcon } from '../components/Icons';
-import { brand, products, services, stats, strengthEquation, strengths } from '../data/content';
+import { brand, caseStudies, products, services, stats, strengthEquation, strengths } from '../data/content';
 
 const KEYWORDS = [
   'DX SUPPORT',
@@ -92,8 +92,8 @@ export default function Home() {
           </h1>
 
           <motion.p className="hero__lead" variants={fadeUp} custom={0.9} initial="hidden" animate="show">
-            <strong>AI駆動開発</strong>のスピードと、<strong>フルスタックエンジニア</strong>の堅実な技術設計。
-            その掛け算で、日本の中小企業のDXを「構想」で終わらせず<strong>「実装」</strong>まで届けます。
+            {/* 日本語の途中に半角スペースが入らないよう、改行を挟まず1行で記述する */}
+            <strong>AI駆動開発</strong>のスピードと、<strong>フルスタックエンジニア</strong>の堅実な技術設計。その掛け算で、日本の中小企業のDXを「構想」で終わらせず<strong>「実装」</strong>まで届けます。
           </motion.p>
 
           <motion.div
@@ -158,13 +158,84 @@ export default function Home() {
         </div>
       </div>
 
+      {/* ========================= CASE STUDIES ======================== */}
+      <section className="section" id="cases" aria-labelledby="cases-heading">
+        <div className="container">
+          <Reveal className="text-center">
+            <p className="eyebrow eyebrow--center">Case studies</p>
+            <h2 className="section-title" id="cases-heading">
+              <span className="en gold-text" aria-hidden="true">
+                Cases
+              </span>
+              たとえば、こんなことができます。
+            </h2>
+            <p className="section-lead">
+              「うちの業務でAIなんて使えるのか」——いちばん多いご質問です。実際にKotoHubの技術で実現できる構成を、業種別にご紹介します。
+            </p>
+          </Reveal>
+
+          <div className="case-grid">
+            {caseStudies.map((c, i) => (
+              <Reveal key={c.id} delay={(i % 2) * 0.08}>
+                <SpotlightCard className="case-card">
+                  <article>
+                    <header className="case-card__head">
+                      <span className="case-card__industry">
+                        <ServiceIcon name={c.icon} className="case-card__icon" />
+                        {c.industry}
+                      </span>
+                      <span className="case-card__no" aria-hidden="true">
+                        CASE {String(i + 1).padStart(2, '0')}
+                      </span>
+                    </header>
+
+                    <h3 className="case-card__title gold-text">{c.title}</h3>
+
+                    <dl className="case-card__list">
+                      <dt className="case-card__term case-card__term--problem">課題</dt>
+                      <dd className="case-card__desc">{c.problem}</dd>
+
+                      <dt className="case-card__term">KotoHubの打ち手</dt>
+                      <dd className="case-card__desc">{c.solution}</dd>
+
+                      <dt className="case-card__term case-card__term--result">結果</dt>
+                      <dd className="case-card__desc case-card__desc--result">{c.result}</dd>
+                    </dl>
+
+                    <ul className="case-card__tech" aria-label="使用する主な技術">
+                      {c.tech.map((t) => (
+                        <li className="case-card__tech-item" key={t}>
+                          {t}
+                        </li>
+                      ))}
+                    </ul>
+                  </article>
+                </SpotlightCard>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal delay={0.05}>
+            <p className="case-note">
+              ※ 上記はKotoHubが対応可能な技術構成をもとにした想定シナリオです。実在の企業名・実測値ではありません。実際のご要件に合わせて設計・お見積りいたします。
+            </p>
+            <div className="text-center" style={{ marginTop: 34 }}>
+              <Link to="/contact" className="btn btn--primary">
+                自社の場合を相談する
+                <ArrowRight className="btn__arrow" />
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* ========================== CONCEPT =========================== */}
-      <section className="section">
+      <section className="section" id="concept" aria-labelledby="concept-heading">
         <div className="container">
           <div className="concept">
             <Reveal>
               <p className="eyebrow">Concept</p>
-              <h2 className="section-title">
+              <h2 className="section-title" id="concept-heading">
                 <span className="en gold-text" aria-hidden="true">
                   Concept
                 </span>
@@ -197,19 +268,18 @@ export default function Home() {
       </section>
 
       {/* ========================== SERVICES ========================== */}
-      <section className="section">
+      <section className="section" id="services" aria-labelledby="services-heading">
         <div className="container">
-          <Reveal className="text-center" >
+          <Reveal className="text-center">
             <p className="eyebrow eyebrow--center">Services</p>
-            <h2 className="section-title">
+            <h2 className="section-title" id="services-heading">
               <span className="en gold-text" aria-hidden="true">
                 Services
               </span>
               できること、ぜんぶ。
             </h2>
             <p className="section-lead">
-              「作って終わり」にしないために、上流の相談から運用・内製化まで。
-              中小企業のDXに必要なものを、一つの窓口でご提供します。
+              「作って終わり」にしないために、上流の相談から運用・内製化まで。中小企業のDXに必要なものを、一つの窓口でご提供します。
             </p>
           </Reveal>
 
@@ -236,11 +306,11 @@ export default function Home() {
       </section>
 
       {/* ========================== STRENGTH ========================== */}
-      <section className="section">
+      <section className="section" id="strengths" aria-labelledby="strengths-heading">
         <div className="container">
           <Reveal className="text-center">
             <p className="eyebrow eyebrow--center">Our strength</p>
-            <h2 className="section-title">
+            <h2 className="section-title" id="strengths-heading">
               <span className="en gold-text" aria-hidden="true">
                 Strength
               </span>
@@ -310,19 +380,18 @@ export default function Home() {
       </section>
 
       {/* ========================== PRODUCTS ========================== */}
-      <section className="section">
+      <section className="section" id="products" aria-labelledby="products-heading">
         <div className="container">
           <Reveal className="text-center">
             <p className="eyebrow eyebrow--center">Product catalog</p>
-            <h2 className="section-title">
+            <h2 className="section-title" id="products-heading">
               <span className="en gold-text" aria-hidden="true">
                 Products
               </span>
               作る前に、まず使ってみる。
             </h2>
             <p className="section-lead">
-              KotoHubが保有するプロダクトを、月額サブスクリプションで貸し出します。
-              初期開発費をかけずに始められ、御社仕様へのカスタマイズや買い切りへの移行も可能です。
+              KotoHubが保有するプロダクトを、月額サブスクリプションで貸し出します。初期開発費をかけずに始められ、御社仕様へのカスタマイズや買い切りへの移行も可能です。
             </p>
           </Reveal>
 
