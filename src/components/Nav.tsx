@@ -47,6 +47,8 @@ export default function Nav() {
                 key={item.to}
                 to={item.to}
                 end={item.to === '/'}
+                target={item.newTab ? '_blank' : undefined}
+                rel={item.newTab ? 'noopener noreferrer' : undefined}
                 className={({ isActive }) => `nav__link${isActive ? ' is-active' : ''}`}
               >
                 {item.label}
@@ -94,6 +96,8 @@ export default function Nav() {
                   <NavLink
                     to={item.to}
                     end={item.to === '/'}
+                    target={item.newTab ? '_blank' : undefined}
+                    rel={item.newTab ? 'noopener noreferrer' : undefined}
                     className={({ isActive }) => `drawer__link${isActive ? ' is-active' : ''}`}
                   >
                     {item.label}

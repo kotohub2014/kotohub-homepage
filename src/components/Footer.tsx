@@ -23,7 +23,9 @@ export default function Footer() {
             <ul className="footer__list">
               {navItems.map((item) => (
                 <li key={item.to}>
-                  <Link to={item.to}>{item.labelJa}</Link>
+                  <Link to={item.to} target={item.newTab ? '_blank' : undefined} rel={item.newTab ? 'noopener noreferrer' : undefined}>
+                    {item.labelJa}
+                  </Link>
                 </li>
               ))}
             </ul>

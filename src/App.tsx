@@ -11,6 +11,7 @@ import PageMeta from './components/PageMeta';
 import Home from './pages/Home';
 
 const Services = lazy(() => import('./pages/Services'));
+const Founder = lazy(() => import('./pages/Founder'));
 const Products = lazy(() => import('./pages/Products'));
 const Strengths = lazy(() => import('./pages/Strengths'));
 const About = lazy(() => import('./pages/About'));
@@ -39,6 +40,7 @@ function AnimatedRoutes() {
             <Route path="/products" element={<Products />} />
             <Route path="/strengths" element={<Strengths />} />
             <Route path="/about" element={<About />} />
+            <Route path="/founder" element={<Founder />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="*" element={<NotFound />} />

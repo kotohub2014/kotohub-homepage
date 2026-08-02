@@ -29,6 +29,10 @@ const META: Record<string, Meta> = {
     title: `事業者情報｜${brand.name}`,
     description: 'KotoHubの屋号・事業内容・対応エリア・技術スタック・お取引の考え方についてご案内します。',
   },
+  '/founder': {
+    title: `代表紹介｜${brand.name}`,
+    description: 'KotoHub代表・三好智のプロフィールと、これまでの経歴をご紹介します。',
+  },
   '/contact': {
     title: `お問い合わせ｜${brand.name}`,
     description:

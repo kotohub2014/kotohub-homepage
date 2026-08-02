@@ -2,6 +2,7 @@ import PageHead from '../components/PageHead';
 import Reveal from '../components/Reveal';
 import Faq from '../components/Faq';
 import CTA from '../components/CTA';
+import { ArrowRight } from '../components/Icons';
 import { brand, businessInfo, faqs, values } from '../data/content';
 
 export default function About() {
@@ -93,7 +94,19 @@ export default function About() {
                 {businessInfo.map((row) => (
                   <tr key={row.label}>
                     <th scope="row">{row.label}</th>
-                    <td>{row.value}</td>
+                    <td>
+                      {row.label === '代表者' ? (
+                        <a href="/founder" target="_blank" rel="noopener noreferrer" className="founder-link">
+                          <span className="founder-link__row">
+                            {row.value}
+                            <ArrowRight className="founder-link__arrow" />
+                          </span>
+                          <span className="founder-link__note">代表者プロフィールを見る（別タブで開きます）</span>
+                        </a>
+                      ) : (
+                        row.value
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
