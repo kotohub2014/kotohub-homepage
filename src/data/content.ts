@@ -23,7 +23,8 @@ export const brand = {
       "大手ベンダーの見積りで止まってしまった構想を、AI駆動開発のスピードと、堅実な技術設計の両輪で現実的なコストに落とし込む。それがKotoHubの役割です。",
     ],
   },
-  domain: "kotohub.info",
+  /** 正規ホスト。kotohub.info は www 側へ308リダイレクトされるため www を正とする */
+  domain: "www.kotohub.info",
   email: "work@kotohub.info",
 };
 

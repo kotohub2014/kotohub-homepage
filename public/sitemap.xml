@@ -1,11 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  KotoHub サイトマップ
+  正規ホストは www.kotohub.info（kotohub.info は308リダイレクト）。
+  ページを追加・削除したら、このファイルの更新も忘れずに。
+-->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://kotohub.info/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://kotohub.info/services</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://kotohub.info/products</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://kotohub.info/strengths</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://kotohub.info/contact</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://kotohub.info/about</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://kotohub.info/founder</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://kotohub.info/privacy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url>
+    <loc>https://www.kotohub.info/</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.kotohub.info/services</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.kotohub.info/products</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.kotohub.info/strengths</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.kotohub.info/contact</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.kotohub.info/about</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.kotohub.info/founder</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.kotohub.info/privacy</loc>
+    <lastmod>2026-08-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
 </urlset>

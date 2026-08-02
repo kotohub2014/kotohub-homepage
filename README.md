@@ -3,7 +3,7 @@
 個人事業主「KotoHub」のホームページ。黒 × ゴールドを基調に、スクロール／ページ遷移アニメーションを備えたリッチなSPAです。
 
 - **Stack**: React 18 + Vite 5 + TypeScript 5 + React Router 6 + Framer Motion
-- **Deploy**: Vercel（ドメイン: `kotohub.info`）
+- **Deploy**: Vercel（正規ドメイン: `www.kotohub.info` — `kotohub.info` は308リダイレクト）
 
 ---
 
