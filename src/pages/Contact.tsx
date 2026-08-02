@@ -6,22 +6,15 @@ import Reveal from '../components/Reveal';
 import { ArrowRight } from '../components/Icons';
 import { brand, services } from '../data/content';
 
-/**
- * 送信先エンドポイント。
- * Vercel の環境変数 `VITE_CONTACT_ENDPOINT` に Formspree / Resend / 自前APIのURLを設定すると
- * そこへ JSON で POST します。未設定の場合はメーラーを起動するフォールバック動作になります。
- */
-const ENDPOINT = import.meta.env.VITE_CONTACT_ENDPOINT as string | undefined;
-
 const BUDGETS = ['〜30万円', '30〜100万円', '100〜300万円', '300万円〜', '未定 / 相談したい'];
 
-type Status = 'idle' | 'sending' | 'sent' | 'error';
+type Status = 'idle' | 'sent';
 
 export default function Contact() {
   const [status, setStatus] = useState<Status>('idle');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
@@ -36,28 +29,7 @@ export default function Contact() {
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
 
-    setStatus('sending');
-
     const subject = `【お問い合わせ】${data.company || data.name}`;
-
-    if (ENDPOINT) {
-      try {
-        const res = await fetch(ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          // _subject は Formspree 等が件名として拾う慣例のキー
-          body: JSON.stringify({ ...data, _subject: subject, source: 'KotoHubホームページ' }),
-        });
-        if (!res.ok) throw new Error(String(res.status));
-        setStatus('sent');
-        form.reset();
-      } catch {
-        setStatus('error');
-      }
-      return;
-    }
-
-    // フォールバック: メーラーを起動して本文を引き継ぐ
     const body = [
       `会社名 / 屋号: ${data.company || '(未記入)'}`,
       `お名前: ${data.name}`,
@@ -135,13 +107,8 @@ export default function Contact() {
               <form className="form" onSubmit={handleSubmit} noValidate>
                 {status === 'sent' && (
                   <p className="form__result" role="status">
-                    送信ありがとうございます。内容を確認のうえ、2営業日以内にご返信いたします。
-                    {!ENDPOINT && ' （メールソフトが起動しない場合は、お手数ですが上記アドレス宛に直接ご連絡ください。）'}
-                  </p>
-                )}
-                {status === 'error' && (
-                  <p className="form__result" role="alert" style={{ borderColor: 'rgba(255,120,120,.4)' }}>
-                    送信に失敗しました。お手数ですが {brand.email} 宛に直接ご連絡ください。
+                    メールソフトの起動画面に移動します。内容をご確認のうえ、そのまま送信してください。
+                    起動しない場合は、お手数ですが <a href={`mailto:${brand.email}`}>{brand.email}</a> 宛に直接ご連絡ください。
                   </p>
                 )}
 
@@ -254,8 +221,8 @@ export default function Contact() {
                   </p>
                 )}
 
-                <button type="submit" className="btn btn--primary btn--block" disabled={status === 'sending'}>
-                  {status === 'sending' ? '送信中...' : '送信する'}
+                <button type="submit" className="btn btn--primary btn--block">
+                  送信する
                   <ArrowRight className="btn__arrow" />
                 </button>
               </form>
