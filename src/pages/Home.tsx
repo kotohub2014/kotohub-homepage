@@ -66,7 +66,7 @@ export default function Home() {
                 initial="hidden"
                 animate="show"
               >
-                事を、
+                それ、
               </motion.span>
             </span>
             <span className="hero__title-line">
@@ -77,7 +77,7 @@ export default function Home() {
                 initial="hidden"
                 animate="show"
               >
-                動かす。
+                やれますよ。
               </motion.span>
             </span>
             <motion.span

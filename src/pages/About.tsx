@@ -13,8 +13,8 @@ export default function About() {
         en="ABOUT"
         title={
           <>
-            <span className="gold-text gold-text--shimmer">「相談できる技術者」</span>
-            が、いちばん強い。
+            <span className="gold-text gold-text--shimmer">「やれますよ」</span>
+            と言える技術者が、いちばん強い。
           </>
         }
         lead={brand.concept.body[0]}
