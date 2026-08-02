@@ -113,7 +113,7 @@ VITE_CONTACT_ENDPOINT=https://formspree.io/f/xxxxxxxx
 `src/data/content.ts` の `PLACEHOLDER` コメントが付いた箇所は仮の値です。
 
 - **事業者情報** (`businessInfo`) — 代表者名、所在地、開業年月、インボイス登録番号
-- **メールアドレス** (`brand.email`) — 現在は `contact@kotohub.info`
+- **代表者名・所在地・開業年月・インボイス登録番号** — `businessInfo` 内のプレースホルダーを差し替え
 - **プロダクト** (`products`) — 名称・説明・**価格はすべてサンプル**です。実際に提供するプロダクトに差し替えてください
 - **料金プラン** (`src/pages/Services.tsx` の Pricing セクション) — 金額はサンプルです
 - **数値実績** (`stats`) — 「開発工数60%削減」等は目安値です。実績に基づく数値へ

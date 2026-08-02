@@ -38,12 +38,15 @@ export default function Contact() {
 
     setStatus('sending');
 
+    const subject = `【お問い合わせ】${data.company || data.name}`;
+
     if (ENDPOINT) {
       try {
         const res = await fetch(ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify(data),
+          // _subject は Formspree 等が件名として拾う慣例のキー
+          body: JSON.stringify({ ...data, _subject: subject, source: 'KotoHubホームページ' }),
         });
         if (!res.ok) throw new Error(String(res.status));
         setStatus('sent');
@@ -65,11 +68,12 @@ export default function Contact() {
       '',
       'ご相談内容:',
       data.message,
+      '',
+      '---',
+      'KotoHubホームページより送信',
     ].join('\n');
 
-    window.location.href = `mailto:${brand.email}?subject=${encodeURIComponent(
-      `【お問い合わせ】${data.company || data.name} 様`,
-    )}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:${brand.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setStatus('sent');
   };
 

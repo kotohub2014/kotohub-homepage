@@ -24,7 +24,7 @@ export const brand = {
     ],
   },
   domain: 'kotohub.info',
-  email: 'contact@kotohub.info', // PLACEHOLDER: 実際の連絡先メールに差し替え
+  email: 'work@kotohub.info',
 };
 
 /* ------------------------------------------------------------------ *
@@ -313,7 +313,7 @@ export const businessInfo: { label: string; value: string }[] = [
   { label: '事業内容', value: 'DX支援 / AI導入支援 / システム・アプリケーション開発 / ホームページ制作 / クラウド移行支援 / データ分析基盤構築 / SaaSの提供' },
   { label: '対応エリア', value: '全国（オンラインにて対応。ご要望に応じて訪問も可能）' },
   { label: '営業時間', value: '平日 10:00 - 19:00（お問い合わせは24時間受付）' },
-  { label: 'お問い合わせ', value: 'contact@kotohub.info' }, // PLACEHOLDER
+  { label: 'お問い合わせ', value: 'work@kotohub.info' },
 ];
 
 export const values = [
