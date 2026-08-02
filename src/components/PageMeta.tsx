@@ -1,6 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { brand, faqs, navItems } from '../data/content';
+
+declare global {
+  interface Window {
+    dataLayer?: Record<string, unknown>[];
+  }
+}
 
 type Meta = { title: string; description: string };
 
@@ -100,6 +106,8 @@ function buildStructuredData(pathname: string, meta: Meta) {
 /** ルートに応じて title / description / canonical / 構造化データ を書き換える */
 export default function PageMeta() {
   const { pathname } = useLocation();
+  /** 直近でGTMに通知済みのパス。同じパスの再実行では送信しない */
+  const lastTrackedPath = useRef<string | null>(null);
 
   useEffect(() => {
     const meta = META[pathname] ?? FALLBACK;
@@ -137,6 +145,24 @@ export default function PageMeta() {
       script.textContent = JSON.stringify(data);
       document.head.appendChild(script);
     }
+
+    // --- Google タグ マネージャーへページ遷移を通知する ---
+    // SPAはページを再読み込みしないため、タブを切り替えても
+    // GTM標準のページビューは初回しか発火しない。
+    // タイトル等を書き換えた後に自前のイベントを送って計測を補う。
+
+    // 初回表示は gtm.js が自動で計測するので送らない。
+    // また、StrictModeの二重実行などで同じパスが再度流れても送らない。
+    const isDuplicate = lastTrackedPath.current === null || lastTrackedPath.current === pathname;
+    lastTrackedPath.current = pathname;
+    if (isDuplicate) return;
+
+    window.dataLayer?.push({
+      event: 'spa_page_view',
+      page_path: pathname,
+      page_location: url,
+      page_title: meta.title,
+    });
   }, [pathname]);
 
   return null;
