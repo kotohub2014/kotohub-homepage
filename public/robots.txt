@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kotohub.com/sitemap.xml
+Sitemap: https://kotohub.info/sitemap.xml

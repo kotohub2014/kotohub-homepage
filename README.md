@@ -3,7 +3,7 @@
 個人事業主「KotoHub」のホームページ。黒 × ゴールドを基調に、スクロール／ページ遷移アニメーションを備えたリッチなSPAです。
 
 - **Stack**: React 18 + Vite 5 + TypeScript 5 + React Router 6 + Framer Motion
-- **Deploy**: Vercel（想定ドメイン: `kotohub.com`）
+- **Deploy**: Vercel（ドメイン: `kotohub.info`）
 
 ---
 
@@ -84,7 +84,7 @@ SPA のため直リンク時に 404 とならないよう、`vercel.json` で全
 1. リポジトリを GitHub に push
 2. Vercel で **Add New → Project** からインポート
 3. Framework Preset は `Vite`（`vercel.json` により自動設定されます）
-4. Deploy 後、**Settings → Domains** で `kotohub.com` を追加し、DNS を設定
+4. Deploy 後、**Settings → Domains** で `kotohub.info` を追加し、DNS を設定
 
 環境変数を使う場合は **Settings → Environment Variables** に `VITE_CONTACT_ENDPOINT` を追加してください（下記参照）。
 
@@ -113,7 +113,7 @@ VITE_CONTACT_ENDPOINT=https://formspree.io/f/xxxxxxxx
 `src/data/content.ts` の `PLACEHOLDER` コメントが付いた箇所は仮の値です。
 
 - **事業者情報** (`businessInfo`) — 代表者名、所在地、開業年月、インボイス登録番号
-- **メールアドレス** (`brand.email`) — 現在は `contact@kotohub.com`
+- **メールアドレス** (`brand.email`) — 現在は `contact@kotohub.info`
 - **プロダクト** (`products`) — 名称・説明・**価格はすべてサンプル**です。実際に提供するプロダクトに差し替えてください
 - **料金プラン** (`src/pages/Services.tsx` の Pricing セクション) — 金額はサンプルです
 - **数値実績** (`stats`) — 「開発工数60%削減」等は目安値です。実績に基づく数値へ
