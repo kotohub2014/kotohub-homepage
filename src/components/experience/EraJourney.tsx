@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
 
 import { createEraScene, type EraSceneHandle, type SceneState } from './eraScene';
 import { eras } from '../../data/eras';
@@ -72,89 +71,88 @@ export default function EraJourney() {
   const isFirst = state.eraIndex === 0;
 
   return (
-    <div className={`journey${isFullscreen ? ' is-fullscreen' : ''}`} ref={wrapRef}>
-      <div className="journey__canvas" ref={canvasRef} aria-hidden="true" />
+    <div className={`journey-wrap${isFullscreen ? ' is-fullscreen' : ''}`} ref={wrapRef}>
+      <div className="journey">
+        <div className="journey__canvas" ref={canvasRef} aria-hidden="true" />
 
-      {/* --- 進行度 --- */}
-      <div className="journey__progress" aria-hidden="true">
-        {eras.map((e, i) => (
-          <span
-            key={e.id}
-            className={`journey__tick${i === state.eraIndex ? ' is-active' : ''}${
-              i < state.eraIndex ? ' is-passed' : ''
-            }`}
-          >
-            <em>{e.no}</em>
-          </span>
-        ))}
-      </div>
+        {/* --- 進行度 --- */}
+        <div className="journey__progress" aria-hidden="true">
+          {eras.map((e, i) => (
+            <span
+              key={e.id}
+              className={`journey__tick${i === state.eraIndex ? ' is-active' : ''}${
+                i < state.eraIndex ? ' is-passed' : ''
+              }`}
+            >
+              <em>{e.no}</em>
+            </span>
+          ))}
+        </div>
 
-      {/* --- 時代の説明（画面上のオーバーレイ） --- */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          className="journey__info"
-          key={era.id}
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -12 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <p className="journey__years">{era.years}</p>
-          <h2 className="journey__title">{era.title}</h2>
-          <p className="journey__desc">{era.description}</p>
-          <p className="journey__pain">
-            <span>この時代の課題</span>
-            {era.pain}
-          </p>
-        </motion.div>
-      </AnimatePresence>
-
-      {/* --- 操作 --- */}
-      <div className="journey__controls">
-        <button
-          type="button"
-          className="journey__btn journey__btn--sub"
-          onClick={() => sceneRef.current?.back()}
-          disabled={isFirst}
-          aria-label="前の時代へ戻る"
-        >
-          戻る
-        </button>
-
-        {isLast ? (
+        {/* --- 操作 --- */}
+        <div className="journey__controls">
           <button
             type="button"
-            className="journey__btn journey__btn--main"
-            onClick={() => sceneRef.current?.reset()}
+            className="journey__btn journey__btn--sub"
+            onClick={() => sceneRef.current?.back()}
+            disabled={isFirst}
+            aria-label="前の時代へ戻る"
           >
-            最初から見る
+            戻る
           </button>
-        ) : (
+
+          {isLast ? (
+            <button
+              type="button"
+              className="journey__btn journey__btn--main"
+              onClick={() => sceneRef.current?.reset()}
+            >
+              最初から見る
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="journey__btn journey__btn--main"
+              onClick={() => sceneRef.current?.advance()}
+            >
+              進む
+              <ArrowRight className="btn__arrow" />
+            </button>
+          )}
+
           <button
             type="button"
-            className="journey__btn journey__btn--main"
-            onClick={() => sceneRef.current?.advance()}
+            className="journey__btn journey__btn--sub"
+            onClick={toggleFullscreen}
+            aria-label={isFullscreen ? '全画面表示を終了' : '全画面表示にする'}
           >
-            進む
-            <ArrowRight className="btn__arrow" />
+            {isFullscreen ? '全画面を終了' : '全画面'}
           </button>
-        )}
+        </div>
 
-        <button
-          type="button"
-          className="journey__btn journey__btn--sub"
-          onClick={toggleFullscreen}
-          aria-label={isFullscreen ? '全画面表示を終了' : '全画面表示にする'}
-        >
-          {isFullscreen ? '全画面を終了' : '全画面'}
-        </button>
+        <p className="journey__hint" aria-hidden="true">
+          マウスを動かすと視点が動きます ／ ← → キーでも移動できます
+        </p>
+
+        {!ready && <div className="journey__loading">3D空間を読み込んでいます…</div>}
       </div>
 
-      <p className="journey__hint" aria-hidden="true">
-        マウスを動かすと視点が動きます ／ ← → キーでも移動できます
-      </p>
-
-      {!ready && <div className="journey__loading">3D空間を読み込んでいます…</div>}
+      {/*
+        年代・時代名・ひとことは3D空間内の標識に描いてある。
+        詳しい説明はここ（キャンバスの外）に置き、3Dの視界を一切覆わないようにしている。
+      */}
+      <div className="journey-caption" role="status" aria-live="polite">
+        <p className="journey-caption__meta">
+          <span className="journey-caption__no">{era.no}</span>
+          <span className="journey-caption__title">{era.title}</span>
+          <span className="journey-caption__years">{era.years}</span>
+        </p>
+        <p className="journey-caption__desc">{era.description}</p>
+        <p className="journey-caption__pain">
+          <span>この時代の課題</span>
+          {era.pain}
+        </p>
+      </div>
     </div>
   );
 }

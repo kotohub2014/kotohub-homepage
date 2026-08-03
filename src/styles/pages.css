@@ -325,23 +325,62 @@
    CASE STUDIES
    ------------------------------------------------------------------ */
 
-.case-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 22px;
-  margin-top: 54px;
+/* ------------------------------------------------------------------
+   横に流れるカルーセル（汎用）
+   ------------------------------------------------------------------ */
+
+.carousel {
+  overflow: hidden;
+  cursor: grab;
+  /* 縦スクロールは妨げず、横方向だけ自前で処理する */
+  touch-action: pan-y;
+  /* 左右の端をぼかして「続いている」ことを示す */
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
 }
 
-/* 事例は4件なので、広い画面では2×2に組んで座りを良くする */
-@media (min-width: 1000px) {
-  .case-grid {
-    grid-template-columns: 1fr 1fr;
-  }
+.carousel.is-dragging {
+  cursor: grabbing;
+}
+
+.carousel__track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  will-change: transform;
+}
+
+.carousel__set {
+  display: flex;
+  gap: 20px;
+}
+
+.carousel__item {
+  display: flex;
+}
+
+/* ドラッグ中に画像やテキストが選択されないように */
+.carousel * {
+  -webkit-user-drag: none;
+}
+
+.carousel.is-dragging * {
+  user-select: none;
+}
+
+/* ------------------------------------------------------------------
+   導入事例カード
+   ------------------------------------------------------------------ */
+
+.case-carousel-wrap {
+  margin-top: 46px;
 }
 
 .case-card {
-  height: 100%;
-  padding: 32px 30px 30px;
+  /* カルーセル内では横幅を固定し、縦に長くなりすぎないよう字も詰める */
+  flex: 0 0 auto;
+  width: clamp(276px, 78vw, 372px);
+  padding: 26px 26px 24px;
 }
 
 .case-card__head {
@@ -381,10 +420,10 @@
 }
 
 .case-card__title {
-  font-size: clamp(19px, 2.2vw, 23px);
+  font-size: 18px;
   font-weight: 700;
-  line-height: 1.55;
-  margin-bottom: 22px;
+  line-height: 1.5;
+  margin-bottom: 18px;
 }
 
 .case-card__list {
@@ -418,32 +457,32 @@
 }
 
 .case-card__desc {
-  margin: 0 0 20px;
-  font-size: 13.6px;
-  line-height: 2.05;
+  margin: 0 0 16px;
+  font-size: 12.8px;
+  line-height: 1.85;
   color: var(--text-dim);
 }
 
 .case-card__desc--result {
   color: var(--gold-pale);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .case-card__tech {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  padding-top: 20px;
+  gap: 7px;
+  padding-top: 16px;
   border-top: 1px solid var(--line-soft);
 }
 
 .case-card__tech-item {
-  padding: 5px 12px;
+  padding: 4px 10px;
   border: 1px solid var(--line);
   border-radius: 99px;
   background: rgba(212, 175, 55, 0.05);
   font-family: var(--font-en);
-  font-size: 11px;
+  font-size: 10.5px;
   letter-spacing: 0.04em;
   color: var(--gold-light);
 }
@@ -1790,13 +1829,15 @@
   .timeline,
   .case-card {
     text-align: left;
+    padding: 22px 20px 20px;
   }
 
-  .case-card {
-    padding: 26px 22px 24px;
+  .case-carousel-wrap {
+    margin-top: 36px;
   }
 
-  .case-grid {
-    margin-top: 40px;
+  .carousel__track,
+  .carousel__set {
+    gap: 14px;
   }
 }

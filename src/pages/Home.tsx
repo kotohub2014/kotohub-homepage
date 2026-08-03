@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 
 import Reveal from '../components/Reveal';
 import SpotlightCard from '../components/SpotlightCard';
+import MarqueeCarousel from '../components/MarqueeCarousel';
 import Counter from '../components/Counter';
 import CTA from '../components/CTA';
 import { ArrowRight, ServiceIcon } from '../components/Icons';
@@ -179,47 +180,52 @@ export default function Home() {
             </p>
           </Reveal>
 
-          <div className="case-grid">
-            {caseStudies.map((c, i) => (
-              <Reveal key={c.id} delay={(i % 2) * 0.08}>
-                <SpotlightCard className="case-card">
-                  <article>
-                    <header className="case-card__head">
-                      <span className="case-card__industry">
-                        <ServiceIcon name={c.icon} className="case-card__icon" />
-                        {c.industry}
-                      </span>
-                      <span className="case-card__no" aria-hidden="true">
-                        CASE {String(i + 1).padStart(2, '0')}
-                      </span>
-                    </header>
+        </div>
 
-                    <h3 className="case-card__title gold-text">{c.title}</h3>
+        {/* 横一列に流れるカルーセル。画面端まで使いたいので container の外に置く */}
+        <Reveal className="case-carousel-wrap">
+          <MarqueeCarousel
+            ariaLabel="導入イメージの一覧。指やマウスで左右に動かせます"
+            className="case-carousel"
+            speed={38}
+            items={caseStudies.map((c, i) => (
+              <SpotlightCard className="case-card">
+                <article>
+                  <header className="case-card__head">
+                    <span className="case-card__industry">
+                      <ServiceIcon name={c.icon} className="case-card__icon" />
+                      {c.industry}
+                    </span>
+                    <span className="case-card__no" aria-hidden="true">
+                      CASE {String(i + 1).padStart(2, '0')}
+                    </span>
+                  </header>
 
-                    <dl className="case-card__list">
-                      <dt className="case-card__term case-card__term--problem">課題</dt>
-                      <dd className="case-card__desc">{c.problem}</dd>
+                  <h3 className="case-card__title gold-text">{c.title}</h3>
 
-                      <dt className="case-card__term">KotoHubの打ち手</dt>
-                      <dd className="case-card__desc">{c.solution}</dd>
+                  {/* 打ち手はタイトルが要約しているため、カードでは課題と結果だけを見せる */}
+                  <dl className="case-card__list">
+                    <dt className="case-card__term case-card__term--problem">課題</dt>
+                    <dd className="case-card__desc">{c.problem}</dd>
 
-                      <dt className="case-card__term case-card__term--result">結果</dt>
-                      <dd className="case-card__desc case-card__desc--result">{c.result}</dd>
-                    </dl>
+                    <dt className="case-card__term case-card__term--result">結果</dt>
+                    <dd className="case-card__desc case-card__desc--result">{c.result}</dd>
+                  </dl>
 
-                    <ul className="case-card__tech" aria-label="使用する主な技術">
-                      {c.tech.map((t) => (
-                        <li className="case-card__tech-item" key={t}>
-                          {t}
-                        </li>
-                      ))}
-                    </ul>
-                  </article>
-                </SpotlightCard>
-              </Reveal>
+                  <ul className="case-card__tech" aria-label="使用する主な技術">
+                    {c.tech.slice(0, 3).map((t) => (
+                      <li className="case-card__tech-item" key={t}>
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              </SpotlightCard>
             ))}
-          </div>
+          />
+        </Reveal>
 
+        <div className="container">
           <Reveal delay={0.05}>
             <p className="case-note">
               ※ 上記はKotoHubが対応可能な技術構成をもとにした想定シナリオです。実在の企業名・実測値ではありません。実際のご要件に合わせて設計・お見積りいたします。

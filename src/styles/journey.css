@@ -2,6 +2,11 @@
    体験コーナー「業務の進化史」
    ================================================================== */
 
+.journey-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
 .journey {
   position: relative;
   width: 100%;
@@ -15,11 +20,93 @@
   user-select: none;
 }
 
-.journey.is-fullscreen {
+.journey-wrap.is-fullscreen {
   height: 100vh;
-  min-height: 100vh;
+  background: #05050a;
+}
+
+.journey-wrap.is-fullscreen .journey {
+  flex: 1;
+  height: auto;
+  min-height: 0;
   border-radius: 0;
   border: none;
+}
+
+/* ------------------------------------------------------------------
+   3Dの外に置く説明文
+   （キャンバスに重ねないので、空間の見え方を一切妨げない）
+   ------------------------------------------------------------------ */
+
+.journey-caption {
+  margin-top: 18px;
+  padding: 20px 24px;
+  border: 1px solid var(--line-soft);
+  border-left: 2px solid var(--gold);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.journey-wrap.is-fullscreen .journey-caption {
+  margin-top: 0;
+  border-radius: 0;
+  border-right: none;
+  border-bottom: none;
+  background: rgba(5, 5, 10, 0.9);
+  padding-bottom: max(20px, env(safe-area-inset-bottom, 0px));
+}
+
+.journey-caption__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.journey-caption__no {
+  font-family: var(--font-en);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--gold-deep);
+}
+
+.journey-caption__title {
+  font-size: 19px;
+  font-weight: 700;
+  word-break: auto-phrase;
+}
+
+.journey-caption__years {
+  font-family: var(--font-en);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+}
+
+.journey-caption__desc {
+  font-size: 14px;
+  line-height: 2.05;
+  color: var(--text-dim);
+  max-width: 78ch;
+}
+
+.journey-caption__pain {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-soft);
+  font-size: 13px;
+  color: var(--gold-pale);
+}
+
+.journey-caption__pain span {
+  display: inline-block;
+  margin-right: 12px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--text-faint);
 }
 
 .journey__canvas {
@@ -31,14 +118,15 @@
   display: block;
 }
 
-/* 四隅を締めて没入感を出すビネット */
+/* 四隅を締めて没入感を出すビネット。
+   3D空間内の説明パネルが暗くならないよう、効き目は控えめにしている */
 .journey::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 2;
-  background: radial-gradient(ellipse 78% 68% at 50% 45%, transparent 40%, rgba(0, 0, 0, 0.72) 100%);
+  background: radial-gradient(ellipse 92% 86% at 50% 45%, transparent 58%, rgba(0, 0, 0, 0.5) 100%);
 }
 
 /* ------------------------------------------------------------------
@@ -114,59 +202,17 @@
    時代の説明
    ------------------------------------------------------------------ */
 
-.journey__info {
+/* 支援技術にだけ読ませるテキスト（画面には出さない） */
+.sr-only {
   position: absolute;
-  left: clamp(20px, 4vw, 48px);
-  bottom: 116px;
-  z-index: 4;
-  max-width: min(430px, calc(100% - 40px));
-  padding: 22px 24px;
-  border-left: 2px solid var(--gold);
-  background: linear-gradient(90deg, rgba(5, 5, 10, 0.86), rgba(5, 5, 10, 0.5));
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
-}
-
-.journey__years {
-  font-family: var(--font-en);
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.26em;
-  color: var(--gold);
-  margin-bottom: 10px;
-}
-
-.journey__title {
-  font-size: clamp(20px, 2.6vw, 27px);
-  font-weight: 700;
-  line-height: 1.45;
-  margin-bottom: 12px;
-  word-break: auto-phrase;
-}
-
-.journey__desc {
-  font-size: 13.4px;
-  line-height: 2;
-  color: var(--text-dim);
-}
-
-.journey__pain {
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid var(--line-soft);
-  font-size: 12.5px;
-  line-height: 1.8;
-  color: var(--gold-pale);
-}
-
-.journey__pain span {
-  display: block;
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  color: var(--text-faint);
-  margin-bottom: 6px;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* ------------------------------------------------------------------
@@ -409,6 +455,18 @@
 }
 
 /* 全画面時はセーフエリアを考慮 */
-.journey.is-fullscreen .journey__controls {
-  bottom: max(34px, env(safe-area-inset-bottom, 0px));
+.journey-wrap.is-fullscreen .journey__controls {
+  bottom: 26px;
+}
+
+@media (max-width: 860px) {
+  .journey-caption {
+    margin-top: 14px;
+    padding: 16px 18px;
+  }
+
+  .journey-caption__desc {
+    font-size: 13.2px;
+    line-height: 1.95;
+  }
 }

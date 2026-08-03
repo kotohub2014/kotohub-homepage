@@ -74,7 +74,118 @@ function createTextSprite(text: string, color: number, subText?: string) {
 
   const sprite = new THREE.Sprite(material);
   sprite.scale.set(60, 15, 1);
-  return sprite;
+  return { sprite, redraw: () => (texture.needsUpdate = true) };
+}
+
+/* ------------------------------------------------------------------ *
+ * 時代の「標識」を3D空間内に作る
+ * ------------------------------------------------------------------ */
+
+const JP_FONT = '"Noto Sans JP", -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif';
+
+/**
+ * 3D空間内に立てる「時代の標識」。
+ *
+ * 長い説明文までここに入れると、読める字の大きさにした時点で
+ * 画面の6割以上を覆ってしまい、3D空間が見えなくなる。
+ * そのため看板には年代・時代名・ひとことだけを載せ、
+ * 詳しい説明はキャンバスの外（下）に置いている。
+ */
+function createInfoPanel(era: Era, planeW: number, planeH: number) {
+  const W = 1000;
+  const H = 480;
+  const scale = 2;
+  const canvas = document.createElement('canvas');
+  canvas.width = W * scale;
+  canvas.height = H * scale;
+  const ctx = canvas.getContext('2d')!;
+
+  const primaryHex = `#${era.colors.primary.toString(16).padStart(6, '0')}`;
+  const goldHex = '#d4af37';
+
+  const draw = () => {
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+
+    // 背景（左端にアクセントの縦ライン）
+    const bg = ctx.createLinearGradient(0, 0, W, 0);
+    bg.addColorStop(0, 'rgba(6, 6, 12, 0.94)');
+    bg.addColorStop(1, 'rgba(6, 6, 12, 0.78)');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.fillStyle = goldHex;
+    ctx.fillRect(0, 0, 10, H);
+
+    ctx.strokeStyle = 'rgba(212, 175, 55, 0.35)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(1, 1, W - 2, H - 2);
+
+    const padX = 64;
+    let y = 96;
+
+    // 年代
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = goldHex;
+    ctx.font = `700 32px "Inter", ${JP_FONT}`;
+    ctx.letterSpacing = '10px';
+    ctx.fillText(era.years, padX, y);
+    ctx.letterSpacing = '0px';
+
+    // 時代名
+    y += 100;
+    ctx.fillStyle = '#ffffff';
+    ctx.font = `700 78px ${JP_FONT}`;
+    ctx.fillText(era.title, padX, y);
+
+    // 英字
+    y += 54;
+    ctx.fillStyle = 'rgba(212, 175, 55, 0.85)';
+    ctx.font = '600 26px "Inter", sans-serif';
+    ctx.letterSpacing = '7px';
+    ctx.fillText(era.titleEn, padX, y);
+    ctx.letterSpacing = '0px';
+
+    // 区切り線
+    y += 48;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(padX, y);
+    ctx.lineTo(W - padX, y);
+    ctx.stroke();
+
+    // ひとこと
+    y += 68;
+    ctx.fillStyle = primaryHex;
+    ctx.font = `500 46px ${JP_FONT}`;
+    ctx.fillText(era.floatText, padX, y);
+  };
+
+  draw();
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 8;
+
+  const geometry = new THREE.PlaneGeometry(planeW, planeH);
+  const material = new THREE.MeshBasicMaterial({
+    map: texture,
+    transparent: true,
+    side: THREE.DoubleSide,
+    fog: false, // 距離で霞むと読めなくなるため霧の影響を受けさせない
+  });
+
+  const mesh = new THREE.Mesh(geometry, material);
+  return {
+    mesh,
+    geometry,
+    material,
+    redraw: () => {
+      draw();
+      texture.needsUpdate = true;
+    },
+  };
 }
 
 /* ------------------------------------------------------------------ *
@@ -610,13 +721,33 @@ export function createEraScene(
   );
   scene.add(new THREE.Points(dustGeo, dustMat));
 
+  /* --- カメラが各時代で停まる位置 --- */
+  const zoneZ = (i: number) => -(i * ZONE_DEPTH + ZONE_DEPTH / 2) + 34;
+
+  /* --- 標識の配置。画面比率に応じて調整する ---
+     横長の画面では通路の左脇、縦長（スマホ）では頭上に置き、
+     いずれも通路の正面が抜けて見えるようにしている。
+     パネルの縦横比は 1000:480 = 2.083 に合わせる */
+  const aspect = container.clientWidth / Math.max(container.clientHeight, 1);
+  const panelLayout =
+    aspect >= 1.4
+      ? { w: 34, h: 16.3, x: -27, y: 6, dz: 42 }
+      : aspect >= 1.0
+        ? { w: 29, h: 13.9, x: -19, y: 6, dz: 46 }
+        : { w: 25, h: 12, x: 0, y: 19, dz: 48 };
+
   /* --- 各時代のゾーンを組み立てる --- */
   /** 1ゾーンあたりの配置数。種類は era.objects を巡回して使う */
   // オブジェクト1つあたりのメッシュ数が増えたため、配置数は絞って描画コールを抑える
   const PER_ZONE = isCompact ? 5 : 9;
 
+  /** フォント読み込み後に描き直す必要があるテキスト類 */
+  const redraws: (() => void)[] = [];
+
   eras.forEach((era, ei) => {
     const zoneCenter = -(ei * ZONE_DEPTH + ZONE_DEPTH / 2);
+    const stopZ = zoneZ(ei);
+    const panelZ = stopZ - panelLayout.dz;
 
     for (let oi = 0; oi < PER_ZONE; oi++) {
       const kind = era.objects[oi % era.objects.length];
@@ -624,10 +755,14 @@ export function createEraScene(
 
       // 通路の左右に振り分けつつ、高さと奥行きをばらす。
       // 手前ほど近く、奥ほど遠くに置いて視界の抜けを作る
-      const side = oi % 2 === 0 ? -1 : 1;
+      let side = oi % 2 === 0 ? -1 : 1;
+      const z = zoneCenter + (oi / (PER_ZONE - 1) - 0.5) * (ZONE_DEPTH - 12);
+
+      // 説明パネルと重なる位置に来るオブジェクトは反対側へ逃がす
+      if (side === -1 && Math.abs(z - panelZ) < 30) side = 1;
+
       const x = side * (20 + ((oi * 13) % 4) * 12 + Math.random() * 6);
       const y = -8 + ((oi * 11) % 30) + Math.random() * 4;
-      const z = zoneCenter + (oi / (PER_ZONE - 1) - 0.5) * (ZONE_DEPTH - 12);
 
       obj.position.set(x, y, z);
 
@@ -653,21 +788,55 @@ export function createEraScene(
       });
     }
 
-    // 空間に浮かぶ説明文
-    const sprite = createTextSprite(era.floatText, era.colors.primary, era.titleEn);
-    sprite.position.set(0, 12, zoneCenter - 6);
+    // 空間に浮かぶ短いコピー（通路の奥、頭上に大きく）
+    const { sprite, redraw: redrawSprite } = createTextSprite(
+      era.floatText,
+      era.colors.primary,
+      era.titleEn,
+    );
+    sprite.position.set(0, 17, zoneCenter - 26);
     scene.add(sprite);
     // テクスチャは dispose() 側の traverse でまとめて解放する
     shared.materials.push(sprite.material);
+    redraws.push(redrawSprite);
 
     floating.push({
       object: sprite,
-      baseY: 12,
+      baseY: 17,
       phase: Math.random() * Math.PI * 2,
       bob: 1.4,
       spin: new THREE.Vector3(0, 0, 0),
     });
+
+    // 時代の説明パネル。オーバーレイではなく3D空間の中に立てる
+    const panel = createInfoPanel(era, panelLayout.w, panelLayout.h);
+    panel.mesh.position.set(panelLayout.x, panelLayout.y, panelZ);
+    // カメラが停まる位置をまっすぐ向かせて、正対した状態で読めるようにする
+    panel.mesh.lookAt(new THREE.Vector3(0, 6, stopZ));
+    scene.add(panel.mesh);
+
+    shared.geometries.push(panel.mesh.geometry);
+    shared.materials.push(panel.material);
+    redraws.push(panel.redraw);
+
+    floating.push({
+      object: panel.mesh,
+      baseY: panelLayout.y,
+      phase: Math.random() * Math.PI * 2,
+      bob: 0.45, // 読みづらくならないよう、揺れはごく小さく
+      spin: new THREE.Vector3(0, 0, 0),
+    });
   });
+
+  /* --- Webフォントの読み込みが終わってから描き直す ---
+     初回描画時にNoto Sans JPが未読込だと代替フォントで焼き付いてしまうため */
+  document.fonts?.ready
+    .then(() => {
+      for (const r of redraws) r();
+    })
+    .catch(() => {
+      /* 対応していない環境では初回描画のまま */
+    });
 
   /* --- 通路の終端。行き止まりに見せず「この先へ続く」印象にする --- */
   const gateColor = eras[eras.length - 1].colors.primary;
@@ -708,8 +877,6 @@ export function createEraScene(
 
   const pointer = { x: 0, y: 0 };
   const look = { x: 0, y: 0 };
-
-  const zoneZ = (i: number) => -(i * ZONE_DEPTH + ZONE_DEPTH / 2) + 34;
 
   const emit = () => {
     onState({
