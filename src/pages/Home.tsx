@@ -1,3 +1,4 @@
+import { Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -7,6 +8,10 @@ import Counter from '../components/Counter';
 import CTA from '../components/CTA';
 import { ArrowRight, ServiceIcon } from '../components/Icons';
 import { brand, caseStudies, products, services, stats, strengthEquation, strengths } from '../data/content';
+import { eras } from '../data/eras';
+
+// Three.js は容量が大きいため、体験セクションだけ遅延読み込みする
+const EraJourney = lazy(() => import('../components/experience/EraJourney'));
 
 const KEYWORDS = [
   'DX SUPPORT',
@@ -302,6 +307,50 @@ export default function Home() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ========================= EXPERIENCE ========================= */}
+      <section className="section" id="experience" aria-labelledby="experience-heading">
+        <div className="container">
+          <Reveal className="text-center">
+            <p className="eyebrow eyebrow--center">Experience</p>
+            <h2 className="section-title" id="experience-heading">
+              <span className="en gold-text" aria-hidden="true">
+                Where
+              </span>
+              あなたはどの時代にいますか？
+            </h2>
+            <p className="section-lead">
+              ここまでご紹介した道具は、どれも突然生まれたものではありません。紙と鉛筆から始まり、電卓、PC、クラウドを経て、いまAIにたどり着いています。6つの時代を3D空間で歩きながら、自社がいまどのあたりにいるのかを確かめてみてください。
+            </p>
+          </Reveal>
+        </div>
+
+        <div className="container container--wide" style={{ marginTop: 46 }}>
+          <Reveal>
+            <Suspense fallback={<div className="journey__loading-outer">3D空間を読み込んでいます…</div>}>
+              <EraJourney />
+            </Suspense>
+          </Reveal>
+        </div>
+
+        <div className="container">
+          {/* 3Dを見られない環境でも時代の流れが伝わるようにテキストでも並べる */}
+          <Reveal delay={0.05}>
+            <ol className="era-strip" aria-label="仕事の道具がたどってきた時代">
+              {eras.map((e) => (
+                <li className="era-strip__item" key={e.id}>
+                  <span className="era-strip__no">{e.no}</span>
+                  <span className="era-strip__title">{e.title}</span>
+                  <span className="era-strip__years">{e.years}</span>
+                </li>
+              ))}
+            </ol>
+            <p className="case-note" style={{ marginTop: 22 }}>
+              いまが何時代でも構いません。大事なのは、次の一歩をどこに置くかです。
+            </p>
+          </Reveal>
         </div>
       </section>
 

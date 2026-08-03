@@ -1500,6 +1500,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* 縦長の人物写真は顔が上寄りにあるため、上基準で切り取って顔を中心に収める */
+  object-position: 50% 5%;
 }
 
 .founder-photo__fallback {

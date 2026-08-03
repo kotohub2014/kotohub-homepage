@@ -1,0 +1,414 @@
+/* ==================================================================
+   体験コーナー「業務の進化史」
+   ================================================================== */
+
+.journey {
+  position: relative;
+  width: 100%;
+  height: min(78vh, 760px);
+  min-height: 460px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #05050a;
+  isolation: isolate;
+  user-select: none;
+}
+
+.journey.is-fullscreen {
+  height: 100vh;
+  min-height: 100vh;
+  border-radius: 0;
+  border: none;
+}
+
+.journey__canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.journey__canvas canvas {
+  display: block;
+}
+
+/* 四隅を締めて没入感を出すビネット */
+.journey::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(ellipse 78% 68% at 50% 45%, transparent 40%, rgba(0, 0, 0, 0.72) 100%);
+}
+
+/* ------------------------------------------------------------------
+   進行度インジケーター
+   ------------------------------------------------------------------ */
+
+.journey__progress {
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.journey__tick {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-soft);
+  border-radius: 50%;
+  background: rgba(5, 5, 10, 0.55);
+  backdrop-filter: blur(6px);
+  transition:
+    border-color 0.5s var(--ease),
+    background 0.5s var(--ease),
+    transform 0.5s var(--ease);
+}
+
+.journey__tick em {
+  font-family: var(--font-en);
+  font-size: 10px;
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  transition: color 0.5s var(--ease);
+}
+
+.journey__tick + .journey__tick::before {
+  content: '';
+  position: absolute;
+  left: -11px;
+  width: 10px;
+  height: 1px;
+  background: var(--line-soft);
+}
+
+.journey__tick.is-passed {
+  border-color: rgba(212, 175, 55, 0.4);
+}
+
+.journey__tick.is-passed em {
+  color: var(--gold-deep);
+}
+
+.journey__tick.is-active {
+  border-color: var(--gold);
+  background: rgba(212, 175, 55, 0.16);
+  transform: scale(1.14);
+  box-shadow: 0 0 18px -4px var(--gold-glow);
+}
+
+.journey__tick.is-active em {
+  color: var(--gold-light);
+}
+
+/* ------------------------------------------------------------------
+   時代の説明
+   ------------------------------------------------------------------ */
+
+.journey__info {
+  position: absolute;
+  left: clamp(20px, 4vw, 48px);
+  bottom: 116px;
+  z-index: 4;
+  max-width: min(430px, calc(100% - 40px));
+  padding: 22px 24px;
+  border-left: 2px solid var(--gold);
+  background: linear-gradient(90deg, rgba(5, 5, 10, 0.86), rgba(5, 5, 10, 0.5));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}
+
+.journey__years {
+  font-family: var(--font-en);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+
+.journey__title {
+  font-size: clamp(20px, 2.6vw, 27px);
+  font-weight: 700;
+  line-height: 1.45;
+  margin-bottom: 12px;
+  word-break: auto-phrase;
+}
+
+.journey__desc {
+  font-size: 13.4px;
+  line-height: 2;
+  color: var(--text-dim);
+}
+
+.journey__pain {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line-soft);
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--gold-pale);
+}
+
+.journey__pain span {
+  display: block;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--text-faint);
+  margin-bottom: 6px;
+}
+
+/* ------------------------------------------------------------------
+   操作ボタン
+   ------------------------------------------------------------------ */
+
+.journey__controls {
+  position: absolute;
+  left: 50%;
+  bottom: 34px;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.journey__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px 26px;
+  border-radius: 99px;
+  font-family: var(--font-jp);
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition:
+    transform 0.35s var(--ease),
+    box-shadow 0.45s var(--ease),
+    background 0.35s var(--ease),
+    color 0.35s var(--ease),
+    opacity 0.3s var(--ease);
+}
+
+.journey__btn:active {
+  transform: scale(0.96);
+}
+
+.journey__btn--main {
+  color: #0a0a0f;
+  font-weight: 700;
+  background: var(--gradient-gold);
+  background-size: 200% auto;
+  box-shadow: 0 6px 30px -8px var(--gold-glow);
+  padding-inline: 34px;
+}
+
+.journey__btn--main:hover {
+  background-position: 100% center;
+  box-shadow: 0 10px 40px -8px var(--gold-glow);
+  transform: translateY(-2px);
+}
+
+.journey__btn--main .btn__arrow {
+  transition: transform 0.4s var(--ease);
+}
+
+.journey__btn--main:hover .btn__arrow {
+  transform: translateX(5px);
+}
+
+.journey__btn--sub {
+  color: var(--gold-light);
+  border: 1px solid rgba(212, 175, 55, 0.32);
+  background: rgba(5, 5, 10, 0.55);
+}
+
+.journey__btn--sub:hover:not(:disabled) {
+  background: rgba(212, 175, 55, 0.14);
+  transform: translateY(-2px);
+}
+
+.journey__btn:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+
+.journey__hint {
+  position: absolute;
+  right: clamp(16px, 3vw, 32px);
+  bottom: 14px;
+  z-index: 4;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+  text-align: right;
+}
+
+.journey__loading {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  background: #05050a;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--gold-deep);
+}
+
+/* ------------------------------------------------------------------
+   時代一覧（3Dを見られない環境向けのテキスト版）
+   ------------------------------------------------------------------ */
+
+.journey__loading-outer {
+  display: grid;
+  place-items: center;
+  height: min(78vh, 760px);
+  min-height: 460px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: #05050a;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--gold-deep);
+}
+
+/* 3Dの下に並べる、時代のコンパクトな帯 */
+.era-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+  gap: 10px;
+  margin-top: 26px;
+  counter-reset: era;
+}
+
+.era-strip__item {
+  position: relative;
+  padding: 16px 14px 15px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.016);
+  text-align: center;
+  transition:
+    border-color 0.45s var(--ease),
+    background 0.45s var(--ease),
+    transform 0.45s var(--ease);
+}
+
+.era-strip__item:last-child {
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(212, 175, 55, 0.06);
+}
+
+.era-strip__item:hover {
+  border-color: rgba(212, 175, 55, 0.42);
+  background: rgba(212, 175, 55, 0.06);
+  transform: translateY(-3px);
+}
+
+.era-strip__no {
+  display: block;
+  font-family: var(--font-en);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--gold-deep);
+  margin-bottom: 8px;
+}
+
+.era-strip__title {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.6;
+  word-break: auto-phrase;
+}
+
+.era-strip__years {
+  display: block;
+  margin-top: 7px;
+  font-family: var(--font-en);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+
+/* ------------------------------------------------------------------
+   レスポンシブ
+   ------------------------------------------------------------------ */
+
+@media (max-width: 860px) {
+  .journey {
+    height: min(72vh, 620px);
+    min-height: 520px;
+  }
+
+  .journey__info {
+    left: 14px;
+    right: 14px;
+    bottom: 104px;
+    max-width: none;
+    padding: 18px 18px 18px 20px;
+  }
+
+  .journey__desc {
+    font-size: 12.8px;
+    line-height: 1.95;
+  }
+
+  .journey__controls {
+    bottom: 26px;
+    gap: 8px;
+    width: calc(100% - 28px);
+    justify-content: center;
+  }
+
+  .journey__btn {
+    padding: 12px 18px;
+    font-size: 12.5px;
+  }
+
+  .journey__btn--main {
+    padding-inline: 24px;
+  }
+
+  .journey__hint {
+    display: none;
+  }
+
+  .journey__progress {
+    top: 14px;
+    gap: 8px;
+  }
+
+  .journey__tick {
+    width: 28px;
+    height: 28px;
+  }
+
+  .journey__tick + .journey__tick::before {
+    left: -9px;
+    width: 8px;
+  }
+}
+
+/* 全画面時はセーフエリアを考慮 */
+.journey.is-fullscreen .journey__controls {
+  bottom: max(34px, env(safe-area-inset-bottom, 0px));
+}
