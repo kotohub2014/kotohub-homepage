@@ -93,11 +93,6 @@ export default function Services() {
           <div className="benefit-grid" style={{ marginTop: 40 }}>
             {[
               {
-                title: '月額サブスクリプション',
-                body: '既存プロダクトの貸し出し。初期費用を抑え、月額で始められます。まず効果を確かめたい方へ。',
-                price: '¥15,000〜 / 月',
-              },
-              {
                 title: '請負（一括開発）',
                 body: '要件を固めて開発・納品する形式。ソースコードと技術ドキュメントをお渡しします。',
                 price: '¥300,000〜',
@@ -106,6 +101,11 @@ export default function Services() {
                 title: '技術顧問・準委任',
                 body: '月◯時間の枠で継続的に伴走。相談・改善・内製化支援を柔軟に対応します。',
                 price: '¥100,000〜 / 月',
+              },
+              {
+                title: '月額サブスクリプション',
+                body: '自社プロダクトの貸し出し。初期費用を抑えて始められる形を準備しています。',
+                price: '準備中',
               },
             ].map((p, i) => (
               <Reveal key={p.title} delay={i * 0.08}>

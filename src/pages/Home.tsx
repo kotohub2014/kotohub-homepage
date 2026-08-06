@@ -8,7 +8,7 @@ import MarqueeCarousel from '../components/MarqueeCarousel';
 import Counter from '../components/Counter';
 import CTA from '../components/CTA';
 import { ArrowRight, ServiceIcon } from '../components/Icons';
-import { brand, caseStudies, products, services, stats, strengthEquation, strengths } from '../data/content';
+import { brand, caseStudies, services, stats, strengthEquation, strengths } from '../data/content';
 import { eras } from '../data/eras';
 
 // Three.js は容量が大きいため、体験セクションだけ遅延読み込みする
@@ -443,43 +443,22 @@ export default function Home() {
               <span className="en gold-text" aria-hidden="true">
                 Products
               </span>
-              作る前に、まず使ってみる。
+              作る前に、まず使えるものを。
             </h2>
             <p className="section-lead">
-              KotoHubが保有するプロダクトを、月額サブスクリプションで貸し出します。初期開発費をかけずに始められ、御社仕様へのカスタマイズや買い切りへの移行も可能です。
+              スクラッチ開発に踏み切る前に、月額で試せる自社プロダクトを準備しています。初期費用を抑えて始められる選択肢を、近日中にご用意します。
             </p>
           </Reveal>
 
-          <div className="prod-grid" style={{ marginTop: 54 }}>
-            {products.slice(0, 3).map((p, i) => (
-              <Reveal key={p.id} delay={i * 0.09}>
-                <SpotlightCard className="prod-card">
-                  <div className="prod-card__top">
-                    <div className="prod-card__meta">
-                      <span className="tag">{p.tag}</span>
-                      <span className={`badge badge--${p.status}`}>
-                        {p.status === 'available' ? 'AVAILABLE' : p.status === 'beta' ? 'BETA' : 'COMING SOON'}
-                      </span>
-                    </div>
-                    <h3 className="prod-card__name gold-text">{p.name}</h3>
-                    <p className="prod-card__copy">{p.copy}</p>
-                  </div>
-                  <div className="prod-card__body">
-                    <p className="prod-card__desc">{p.description}</p>
-                    <div className="prod-card__price-wrap" style={{ borderTop: 'none', paddingTop: 0 }}>
-                      <p className="prod-card__price gold-text">{p.price}</p>
-                      <p className="prod-card__price-note">{p.priceNote}</p>
-                    </div>
-                  </div>
-                </SpotlightCard>
-              </Reveal>
-            ))}
-          </div>
-
-          <Reveal className="text-center" delay={0.05}>
-            <div style={{ marginTop: 46 }}>
-              <Link to="/products" className="btn btn--ghost">
-                プロダクト一覧を見る
+          <Reveal delay={0.08}>
+            <div className="coming-soon">
+              <p className="coming-soon__label">Coming Soon</p>
+              <p className="coming-soon__title gold-text gold-text--shimmer">準備中です</p>
+              <p className="coming-soon__body">
+                現在は受託開発でのご提供のみとなります。「こういうものが月額で使えたら」というご要望があれば、ぜひお聞かせください。プロダクト化の検討材料にさせていただきます。
+              </p>
+              <Link to="/contact" className="btn btn--ghost btn--sm">
+                要望を伝える
                 <ArrowRight className="btn__arrow" />
               </Link>
             </div>

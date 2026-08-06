@@ -812,6 +812,45 @@
   margin-top: 5px;
 }
 
+/* ------------------------------------------------------------------
+   Coming Soon（プロダクト準備中）
+   ------------------------------------------------------------------ */
+
+.coming-soon {
+  position: relative;
+  margin-top: 46px;
+  padding: clamp(40px, 6vw, 68px) clamp(24px, 5vw, 56px);
+  border: 1px dashed rgba(212, 175, 55, 0.34);
+  border-radius: var(--radius-lg);
+  background: radial-gradient(ellipse 70% 120% at 50% 0%, rgba(212, 175, 55, 0.07), transparent 70%);
+  text-align: center;
+}
+
+.coming-soon__label {
+  font-family: var(--font-en);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 16px;
+}
+
+.coming-soon__title {
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+}
+
+.coming-soon__body {
+  max-width: 60ch;
+  margin: 0 auto 32px;
+  font-size: 14px;
+  line-height: 2.1;
+  color: var(--text-dim);
+}
+
 .benefit-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
