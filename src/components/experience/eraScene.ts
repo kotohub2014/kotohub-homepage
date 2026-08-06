@@ -77,6 +77,70 @@ function createTextSprite(text: string, color: number, subText?: string) {
   return { sprite, redraw: () => (texture.needsUpdate = true) };
 }
 
+/**
+ * 時代名を大きく強調して見せるスプライト。
+ * 画面の狭いスマホでは、看板の代わりにこれだけを画面中央に出す。
+ */
+function createEraTitleSprite(title: string, color: number) {
+  const W = 1024;
+  const H = 260;
+  const scale = 2;
+  const canvas = document.createElement('canvas');
+  canvas.width = W * scale;
+  canvas.height = H * scale;
+  const ctx = canvas.getContext('2d')!;
+
+  const draw = () => {
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    // 長い時代名でも収まるよう字の大きさを詰める
+    let size = 104;
+    do {
+      ctx.font = `700 ${size}px ${JP_FONT}`;
+      if (ctx.measureText(title).width <= W - 80) break;
+      size -= 6;
+    } while (size > 56);
+
+    const hex = `#${color.toString(16).padStart(6, '0')}`;
+    // 発光を二重に掛けて、背景が明るくても沈まないようにする
+    ctx.shadowColor = hex;
+    ctx.shadowBlur = 44;
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(title, W / 2, H / 2);
+    ctx.shadowBlur = 16;
+    ctx.fillText(title, W / 2, H / 2);
+  };
+
+  draw();
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 8;
+
+  const material = new THREE.SpriteMaterial({
+    map: texture,
+    transparent: true,
+    depthWrite: false,
+    // 手前の浮遊オブジェクトに隠されず、常に読める状態にしておく
+    depthTest: false,
+    fog: false,
+  });
+
+  const sprite = new THREE.Sprite(material);
+  sprite.scale.set(30, 7.6, 1);
+  sprite.renderOrder = 10;
+  return {
+    sprite,
+    redraw: () => {
+      draw();
+      texture.needsUpdate = true;
+    },
+  };
+}
+
 /* ------------------------------------------------------------------ *
  * 時代の「標識」を3D空間内に作る
  * ------------------------------------------------------------------ */
@@ -725,16 +789,16 @@ export function createEraScene(
   const zoneZ = (i: number) => -(i * ZONE_DEPTH + ZONE_DEPTH / 2) + 34;
 
   /* --- 標識の配置。画面比率に応じて調整する ---
-     横長の画面では通路の左脇、縦長（スマホ）では頭上に置き、
-     いずれも通路の正面が抜けて見えるようにしている。
+     横長の画面では通路の左脇に看板を置く。
+     縦長（スマホ）は横幅が足りず看板が他の要素と重なってしまうため、
+     看板は出さずに時代名だけを画面中央へ大きく表示する。
      パネルの縦横比は 1000:480 = 2.083 に合わせる */
   const aspect = container.clientWidth / Math.max(container.clientHeight, 1);
+  const isPortrait = aspect < 1.0;
   const panelLayout =
     aspect >= 1.4
       ? { w: 34, h: 16.3, x: -27, y: 6, dz: 42 }
-      : aspect >= 1.0
-        ? { w: 29, h: 13.9, x: -19, y: 6, dz: 46 }
-        : { w: 25, h: 12, x: 0, y: 19, dz: 48 };
+      : { w: 29, h: 13.9, x: -19, y: 6, dz: 46 };
 
   /* --- 各時代のゾーンを組み立てる --- */
   /** 1ゾーンあたりの配置数。種類は era.objects を巡回して使う */
@@ -759,7 +823,8 @@ export function createEraScene(
       const z = zoneCenter + (oi / (PER_ZONE - 1) - 0.5) * (ZONE_DEPTH - 12);
 
       // 説明パネルと重なる位置に来るオブジェクトは反対側へ逃がす
-      if (side === -1 && Math.abs(z - panelZ) < 30) side = 1;
+      // （パネルを出さないスマホでは不要）
+      if (!isPortrait && side === -1 && Math.abs(z - panelZ) < 30) side = 1;
 
       const x = side * (20 + ((oi * 13) % 4) * 12 + Math.random() * 6);
       const y = -8 + ((oi * 11) % 30) + Math.random() * 4;
@@ -788,44 +853,62 @@ export function createEraScene(
       });
     }
 
-    // 空間に浮かぶ短いコピー（通路の奥、頭上に大きく）
-    const { sprite, redraw: redrawSprite } = createTextSprite(
-      era.floatText,
-      era.colors.primary,
-      era.titleEn,
-    );
-    sprite.position.set(0, 17, zoneCenter - 26);
-    scene.add(sprite);
-    // テクスチャは dispose() 側の traverse でまとめて解放する
-    shared.materials.push(sprite.material);
-    redraws.push(redrawSprite);
+    if (isPortrait) {
+      // スマホ：時代名だけを画面中央に大きく出す
+      const { sprite, redraw } = createEraTitleSprite(era.title, era.colors.primary);
+      const baseY = 7;
+      sprite.position.set(0, baseY, stopZ - 46);
+      scene.add(sprite);
+      shared.materials.push(sprite.material);
+      redraws.push(redraw);
 
-    floating.push({
-      object: sprite,
-      baseY: 17,
-      phase: Math.random() * Math.PI * 2,
-      bob: 1.4,
-      spin: new THREE.Vector3(0, 0, 0),
-    });
+      floating.push({
+        object: sprite,
+        baseY,
+        phase: Math.random() * Math.PI * 2,
+        bob: 0.5, // 読みづらくならないよう、揺れはごく小さく
+        spin: new THREE.Vector3(0, 0, 0),
+      });
+    } else {
+      // 空間に浮かぶ短いコピー（通路の奥、頭上に大きく）
+      const { sprite, redraw: redrawSprite } = createTextSprite(
+        era.floatText,
+        era.colors.primary,
+        era.titleEn,
+      );
+      sprite.position.set(0, 17, zoneCenter - 26);
+      scene.add(sprite);
+      // テクスチャは dispose() 側の traverse でまとめて解放する
+      shared.materials.push(sprite.material);
+      redraws.push(redrawSprite);
 
-    // 時代の説明パネル。オーバーレイではなく3D空間の中に立てる
-    const panel = createInfoPanel(era, panelLayout.w, panelLayout.h);
-    panel.mesh.position.set(panelLayout.x, panelLayout.y, panelZ);
-    // カメラが停まる位置をまっすぐ向かせて、正対した状態で読めるようにする
-    panel.mesh.lookAt(new THREE.Vector3(0, 6, stopZ));
-    scene.add(panel.mesh);
+      floating.push({
+        object: sprite,
+        baseY: 17,
+        phase: Math.random() * Math.PI * 2,
+        bob: 1.4,
+        spin: new THREE.Vector3(0, 0, 0),
+      });
 
-    shared.geometries.push(panel.mesh.geometry);
-    shared.materials.push(panel.material);
-    redraws.push(panel.redraw);
+      // 時代の説明パネル。オーバーレイではなく3D空間の中に立てる
+      const panel = createInfoPanel(era, panelLayout.w, panelLayout.h);
+      panel.mesh.position.set(panelLayout.x, panelLayout.y, panelZ);
+      // カメラが停まる位置をまっすぐ向かせて、正対した状態で読めるようにする
+      panel.mesh.lookAt(new THREE.Vector3(0, 6, stopZ));
+      scene.add(panel.mesh);
 
-    floating.push({
-      object: panel.mesh,
-      baseY: panelLayout.y,
-      phase: Math.random() * Math.PI * 2,
-      bob: 0.45, // 読みづらくならないよう、揺れはごく小さく
-      spin: new THREE.Vector3(0, 0, 0),
-    });
+      shared.geometries.push(panel.mesh.geometry);
+      shared.materials.push(panel.material);
+      redraws.push(panel.redraw);
+
+      floating.push({
+        object: panel.mesh,
+        baseY: panelLayout.y,
+        phase: Math.random() * Math.PI * 2,
+        bob: 0.45, // 読みづらくならないよう、揺れはごく小さく
+        spin: new THREE.Vector3(0, 0, 0),
+      });
+    }
   });
 
   /* --- Webフォントの読み込みが終わってから描き直す ---
