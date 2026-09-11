@@ -1880,3 +1880,61 @@
     gap: 14px;
   }
 }
+
+/* 運営サービスの法務ページへの一覧。
+   **審査で辿られる導線**なので、装飾より「見つかること」を優先する */
+.section-subtitle {
+  margin: 0 0 20px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text);
+}
+
+.legal-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legal-links__item a {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text);
+  transition: border-color 0.35s var(--ease), color 0.35s var(--ease);
+}
+
+.legal-links__item a:hover {
+  border-color: var(--gold);
+  color: var(--gold-light);
+}
+
+.legal-links__label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.legal-links__note {
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 0.02em;
+}
+
+.legal-links__arrow {
+  width: 12px;
+  height: 12px;
+  align-self: flex-end;
+  margin-top: -14px;
+  transition: transform 0.4s var(--ease);
+}
+
+.legal-links__item a:hover .legal-links__arrow {
+  transform: translateX(4px);
+}

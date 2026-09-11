@@ -3,7 +3,7 @@ import Reveal from '../components/Reveal';
 import Faq from '../components/Faq';
 import CTA from '../components/CTA';
 import { ArrowRight } from '../components/Icons';
-import { brand, businessInfo, faqs, values } from '../data/content';
+import { brand, businessInfo, faqs, serviceLegalLinks, values } from '../data/content';
 
 export default function About() {
   return (
@@ -111,6 +111,26 @@ export default function About() {
                 ))}
               </tbody>
             </table>
+          </Reveal>
+
+          {/* 運営サービスの法務ページ。**事業者情報からたどれるようにしておく。**
+              広告配信や決済の審査で、運営者・特定商取引法の表示・規約が
+              1 か所から辿れることを見られる */}
+          <Reveal delay={0.12}>
+            <h3 className="section-subtitle" style={{ marginTop: 56 }}>
+              運営サービスの法務情報
+            </h3>
+            <ul className="legal-links">
+              {serviceLegalLinks.map((link) => (
+                <li key={link.href} className="legal-links__item">
+                  <a href={link.href} target="_blank" rel="noopener noreferrer">
+                    <span className="legal-links__label">{link.label}</span>
+                    <span className="legal-links__note">{link.note}</span>
+                    <ArrowRight className="legal-links__arrow" />
+                  </a>
+                </li>
+              ))}
+            </ul>
           </Reveal>
         </div>
       </section>

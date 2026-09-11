@@ -510,10 +510,10 @@ export const techStack = [
 export const businessInfo: { label: string; value: string }[] = [
   { label: "屋号", value: "KotoHub（コトハブ）" },
   { label: "代表者", value: "三好 智" },
-  { label: "所在地", value: "〒000-0000 ○○県○○市○○ 0-0-0" }, // PLACEHOLDER
-  { label: "開業", value: "20XX年X月" }, // PLACEHOLDER
+  { label: "所在地", value: "新宿店　" + "〒160-0022 東京都新宿区新宿2丁目8番15号 パークフロント新宿 202号室" },
+  { label: "開業", value: "2026年9月" }, // 開業届の提出月。違えば直すこと
   { label: "事業形態", value: "個人事業主" },
-  { label: "インボイス登録番号", value: "T0000000000000" }, // PLACEHOLDER
+  { label: "インボイス登録番号", value: "準備中（登録申請中）" }, // TODO: 登録後に記載
   {
     label: "事業内容",
     value:
@@ -527,7 +527,45 @@ export const businessInfo: { label: string; value: string }[] = [
     label: "営業時間",
     value: "平日 10:00 - 19:00（お問い合わせは24時間受付）",
   },
+  { label: "電話番号", value: "080-3866-8538" },
   { label: "お問い合わせ", value: "work@kotohub.info" },
+  // **運営しているサービスを明記する。** 広告配信 (AdMob / AdSense) の審査で
+  // 「誰が運営しているか」を辿れるようにしておく
+  { label: "運営サービス", value: "ai-mate（AIキャラクター育成ゲーム）" },
+];
+
+/**
+ * 運営サービスの法務ページ。
+ *
+ * **事業者情報からたどれるようにしておく。** 広告配信や決済の審査では、
+ * 運営者・特定商取引法の表示・規約が 1 か所から辿れることを見られる。
+ */
+export const serviceLegalLinks: { label: string; href: string; note: string }[] = [
+  {
+    label: "ai-mate",
+    href: "https://aimate.kotohub.info/",
+    note: "サービス本体",
+  },
+  {
+    label: "事業者情報",
+    href: "https://aimate.kotohub.info/legal/company/",
+    note: "運営者・所在地・連絡先",
+  },
+  {
+    label: "特定商取引法に基づく表示",
+    href: "https://aimate.kotohub.info/legal/tokushoho/",
+    note: "販売価格・支払方法・解約",
+  },
+  {
+    label: "利用規約",
+    href: "https://aimate.kotohub.info/legal/terms/",
+    note: "利用の条件",
+  },
+  {
+    label: "プライバシーポリシー",
+    href: "https://aimate.kotohub.info/legal/privacy/",
+    note: "取得する情報と広告の扱い",
+  },
 ];
 
 export const values = [
