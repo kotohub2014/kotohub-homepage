@@ -1501,6 +1501,16 @@
   margin-top: 0;
 }
 
+/* 節の中の小見出し。**h2 の金の縦線は付けない** — 同じ重みに見えると
+   条の切れ目が読めなくなる */
+.prose h3 {
+  font-size: 15px;
+  margin: 26px 0 10px;
+  color: var(--gold);
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+}
+
 .prose p,
 .prose li {
   color: var(--text-dim);
