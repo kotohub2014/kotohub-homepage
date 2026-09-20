@@ -482,7 +482,6 @@ export const businessInfo: { label: string; value: string }[] = [
   { label: "所在地", value: "新宿店　" + "〒160-0022 東京都新宿区新宿2丁目8番15号 パークフロント新宿 202号室" },
   { label: "開業", value: "2026年9月" }, // 開業届の提出月。違えば直すこと
   { label: "事業形態", value: "個人事業主" },
-  { label: "インボイス登録番号", value: "準備中（登録申請中）" }, // TODO: 登録後に記載
   {
     label: "事業内容",
     value:

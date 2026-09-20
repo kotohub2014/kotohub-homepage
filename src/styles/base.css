@@ -92,10 +92,27 @@ body {
    （長い本文に使うと右端が大きく波打ち、かえって読みにくくなる）
    未対応ブラウザでは無視されるだけで、レイアウトは崩れない。
    -------------------------------------------------------------------- */
+/* --- 日本語の折り返し -------------------------------------------------
+   文節で折り返す (word-break: auto-phrase)。
+   「自動保／存」「フルスタックエンジニ／ア」のような語中での分断を防ぐ。
+   **見出しだけでなく本文にもかける。** 行末の余白は少し増えるが、
+   途中で切れた単語を読み直すほうが、ずっと読みにくい。
+   対応していないブラウザ (Safari など) では無視されるだけで、崩れない。
+   -------------------------------------------------------------------- */
 h1,
 h2,
 h3,
 h4,
+p,
+li,
+dt,
+dd,
+figcaption,
+label,
+th,
+td,
+summary,
+blockquote,
 .hero__title,
 .hero__lead,
 .hero__badge,
@@ -105,20 +122,13 @@ h4,
 .page-head__lead,
 .cta__title,
 .cta__lead,
-.case-card__title,
-.svc-card__title,
-.prod-card__copy,
-.strength__title,
-.flow__title,
-.benefit__title,
-.value__title,
-.faq__q,
 .pill,
 .stat__label {
   word-break: auto-phrase;
+  overflow-wrap: normal; /* 単語の途中では折り返さない */
 }
 
-/* 見出しは行数のバランスを取り、本文は最終行の孤立（泣き別れ）を防ぐ */
+/* 見出しは行数のバランスを取り、本文は最終行の孤立 (泣き別れ) を防ぐ */
 h1,
 h2,
 h3,
@@ -126,7 +136,16 @@ h4,
 .section-title,
 .hero__title,
 .page-head__title,
-.cta__title {
+.cta__title,
+.case-card__title,
+.svc-card__title,
+.product-card__name,
+.product-card__copy,
+.strength__title,
+.flow__title,
+.benefit__title,
+.value__title,
+.faq__q {
   text-wrap: balance;
 }
 
@@ -137,7 +156,24 @@ figcaption {
   text-wrap: pretty;
 }
 
+/* 本文が横に長くなりすぎると読みにくいので、1 行の長さに上限をつける */
+.section-lead,
+.page-head__lead,
+.cta__lead,
+.hero__lead {
+  max-width: 40em;
+}
 
+/* URL・メールアドレス・表の値は、語中で切らずに、はみ出すときだけ折り返す */
+a[href^='http'],
+a[href^='mailto'],
+td,
+dd,
+.product-card__meta dd,
+code {
+  word-break: normal;
+  overflow-wrap: break-word;
+}
 
 h1,
 h2,
