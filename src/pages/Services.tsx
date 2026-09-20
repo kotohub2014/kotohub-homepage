@@ -103,9 +103,9 @@ export default function Services() {
                 price: '¥100,000〜 / 月',
               },
               {
-                title: '月額サブスクリプション',
-                body: '自社プロダクトの貸し出し。初期費用を抑えて始められる形を準備しています。',
-                price: '準備中',
+                title: '保守・運用',
+                body: '公開後の監視・障害対応・改善。自社サービスと同じ体制で見守ります。',
+                price: '¥30,000〜 / 月',
               },
             ].map((p, i) => (
               <Reveal key={p.title} delay={i * 0.08}>

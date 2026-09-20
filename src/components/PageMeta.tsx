@@ -20,7 +20,7 @@ export const META: Record<string, Meta> = {
   '/services': {
     title: `事業内容｜DX支援・AI導入・システム開発｜${brand.name}`,
     description:
-      'オリジナルアプリ開発、ホームページ制作、クラウド移行、データ分析、AI導入。中小企業のDXに必要なサービスを、一つの窓口でご提供します。',
+      '自社サービスの開発・運営、オリジナルアプリ開発、ホームページ制作、クラウド移行、データ分析、AI導入。中小企業のDXに必要なサービスを、一つの窓口でご提供します。',
   },
   '/products': {
     title: `自社サービス｜KotoHub Games・ai-mate｜${brand.name}`,
