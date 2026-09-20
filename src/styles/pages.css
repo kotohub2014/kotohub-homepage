@@ -57,9 +57,9 @@
 }
 
 .hero__title {
-  font-size: clamp(52px, 12.5vw, 168px);
-  font-weight: 900;
-  line-height: 1.02;
+  font-size: clamp(34px, 5.6vw, 68px);
+  font-weight: 800;
+  line-height: 1.28;
   letter-spacing: 0.005em;
   margin-bottom: 8px;
 }
@@ -449,7 +449,7 @@
 }
 
 .case-card__term--problem {
-  color: #b8867f;
+  color: #b04a3a;
 }
 
 .case-card__term--result {
@@ -742,7 +742,7 @@
 }
 
 .badge--available {
-  color: #7ff0b8;
+  color: #15803d;
   background: rgba(60, 220, 140, 0.1);
   border: 1px solid rgba(60, 220, 140, 0.28);
 }
@@ -755,7 +755,7 @@
 
 .badge--coming {
   color: var(--text-faint);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--bg-2);
   border: 1px solid var(--line-soft);
 }
 
@@ -861,7 +861,7 @@
   padding: 30px 28px;
   border: 1px solid var(--line-soft);
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.016);
+  background: var(--surface);
   transition: border-color 0.5s var(--ease), background 0.5s var(--ease);
 }
 
@@ -904,7 +904,7 @@
   border-radius: var(--radius-lg);
   background:
     radial-gradient(ellipse 60% 100% at 82% 50%, rgba(212, 175, 55, 0.11), transparent 70%),
-    rgba(255, 255, 255, 0.018);
+    var(--surface);
   position: relative;
   overflow: hidden;
 }
@@ -1038,7 +1038,7 @@
   padding: 30px 26px 28px;
   border: 1px solid var(--line-soft);
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.016);
+  background: var(--surface);
   transition: border-color 0.5s var(--ease), transform 0.5s var(--ease);
 }
 
@@ -1097,7 +1097,7 @@
 }
 
 .tech__col {
-  background: #07070c;
+  background: var(--bg-2);
   padding: 28px 24px;
 }
 
@@ -1115,7 +1115,7 @@
   font-size: 13.5px;
   color: var(--text-dim);
   padding: 7px 0;
-  border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+  border-bottom: 1px dashed var(--line);
   transition: color 0.3s var(--ease), padding-left 0.35s var(--ease);
 }
 
@@ -1355,7 +1355,7 @@
   padding: clamp(28px, 4vw, 44px);
   border: 1px solid var(--line-soft);
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.018);
+  background: var(--surface);
 }
 
 .form__row {
@@ -1391,7 +1391,7 @@
 }
 
 .form__req--optional {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-3);
   color: var(--text-faint);
   border-color: var(--line-soft);
 }
@@ -1401,7 +1401,7 @@
 .form__textarea {
   width: 100%;
   padding: 13px 15px;
-  background: rgba(0, 0, 0, 0.32);
+  background: var(--bg-2);
   border: 1px solid var(--line-soft);
   border-radius: var(--radius);
   font-size: 14.5px;
@@ -1411,7 +1411,7 @@
 
 .form__input::placeholder,
 .form__textarea::placeholder {
-  color: #4d4b46;
+  color: var(--text-faint);
 }
 
 .form__input:focus,
@@ -1419,7 +1419,7 @@
 .form__textarea:focus {
   outline: none;
   border-color: rgba(212, 175, 55, 0.55);
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--bg-3);
   box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.09);
 }
 
@@ -1433,7 +1433,7 @@
 }
 
 .form__select option {
-  background: #0d0d16;
+  background: var(--bg-2);
   color: var(--text);
 }
 
@@ -1471,7 +1471,7 @@
 .form__error {
   margin-top: 8px;
   font-size: 12px;
-  color: #ff8b8b;
+  color: #c0392b;
 }
 
 .form__result {
@@ -1581,7 +1581,7 @@
   inset: 4px;
   border-radius: 50%;
   overflow: hidden;
-  background: #0d0d16;
+  background: var(--bg-2);
 }
 
 .founder-photo img {
@@ -1947,4 +1947,143 @@
 
 .legal-links__item a:hover .legal-links__arrow {
   transform: translateX(4px);
+}
+
+
+/* ==================================================================
+   自社サービス (Products)
+   ================================================================== */
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+  gap: 24px;
+  margin-top: 44px;
+  align-items: stretch;
+}
+
+.product-grid > * {
+  height: 100%;
+}
+
+.product-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+
+.product-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.product-card__head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.product-card__tag {
+  align-self: flex-start;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--accent-weak);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.product-card__name {
+  font-family: var(--font-en);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.product-card__copy {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.product-card__body {
+  font-size: 14px;
+  line-height: 1.95;
+  color: var(--text-dim);
+}
+
+.product-card__features {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.product-card__features li {
+  position: relative;
+  padding-left: 20px;
+  color: var(--text-dim);
+}
+
+.product-card__features li::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 0.82em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.product-card__meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  background: var(--bg-2);
+}
+
+.product-card__meta dt {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+}
+
+.product-card__meta dd {
+  margin: 2px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.product-card__note {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-faint);
+}
+
+.product-card .btn {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+@media (max-width: 640px) {
+  .product-card {
+    padding: 24px 20px;
+  }
 }

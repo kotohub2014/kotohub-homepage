@@ -134,3 +134,15 @@ VITE_CONTACT_ENDPOINT=https://formspree.io/f/xxxxxxxx
 ```
 
 アニメーションは `prefers-reduced-motion: reduce` を尊重し、OS設定で「視差効果を減らす」が有効な場合は自動的に抑制されます。
+
+## プリレンダー (全ページを静的 HTML に書き出す)
+
+SPA のままだと配る HTML が `<div id="root"></div>` だけで、JS を動かさないクローラ
+(AdSense の審査など) には本文が見えない。`npm run build` の最後に `scripts/prerender.mjs` が
+`src/components/PageMeta.tsx` の `META` にあるルートを全部描いて、`dist/<route>/index.html` に
+本文・title・description・canonical 入りで置く。
+
+- **ページを足したら `META` に足す。** そこに無いルートはプリレンダーされない (sitemap.xml も)
+- ブラウザ側は今までどおり `main.tsx` が描き直すので、動きは変わらない
+- 描画時に `window` / `document` を触るとビルドが落ちる。触るのは `useEffect` の中だけにする
+

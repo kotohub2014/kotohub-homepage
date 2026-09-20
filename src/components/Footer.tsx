@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import Logo from './Logo';
-import { brand, navItems, services } from '../data/content';
+import { brand, navItems, products, services } from '../data/content';
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -28,6 +28,22 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className="footer__title">OUR PRODUCTS</p>
+            <ul className="footer__list">
+              {products.map((p) => (
+                <li key={p.id}>
+                  <a href={p.url} target="_blank" rel="noopener">
+                    {p.name}
+                  </a>
+                </li>
+              ))}
+              <li>
+                <Link to="/products">サービス一覧</Link>
+              </li>
             </ul>
           </div>
 

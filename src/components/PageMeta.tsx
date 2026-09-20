@@ -10,7 +10,8 @@ declare global {
 
 type Meta = { title: string; description: string };
 
-const META: Record<string, Meta> = {
+/** ルートごとの title / description。**プリレンダー (scripts/prerender.mjs) もここを見る** */
+export const META: Record<string, Meta> = {
   '/': {
     title: `${brand.name}｜中小企業のDX・AI導入パートナー｜${brand.catch}`,
     description:
@@ -22,9 +23,9 @@ const META: Record<string, Meta> = {
       'オリジナルアプリ開発、ホームページ制作、クラウド移行、データ分析、AI導入。中小企業のDXに必要なサービスを、一つの窓口でご提供します。',
   },
   '/products': {
-    title: `プロダクト（準備中）｜${brand.name}`,
+    title: `自社サービス｜KotoHub Games・ai-mate｜${brand.name}`,
     description:
-      '月額サブスクリプションで使える自社プロダクトを準備しています。現在ご提供できるのは受託開発のみです。「こういうものが月額で使えたら」というご要望をお聞かせください。',
+      'KotoHubが開発・運営している自社サービスの紹介です。ブラウザゲームポータル「KotoHub Games」と、AIキャラクター育成「ai-mate」を公開中。いずれもインストール不要でご利用いただけます。',
   },
   '/strengths': {
     title: `強み｜AI駆動開発 × フルスタック設計｜${brand.name}`,

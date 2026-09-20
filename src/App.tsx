@@ -2,7 +2,6 @@ import { Suspense, lazy } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
 
-import Ambient from './components/Ambient';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -57,7 +56,6 @@ export default function App() {
 
   return (
     <>
-      <Ambient />
       <motion.div className="scroll-progress" style={{ scaleX: progress }} />
       <ScrollToTop />
       <PageMeta />

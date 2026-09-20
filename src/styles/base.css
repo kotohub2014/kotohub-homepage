@@ -4,60 +4,53 @@
    ================================================================== */
 
 :root {
-  /* --- Surface --- */
-  --bg: #05050a;
-  --bg-2: #08080f;
-  --bg-3: #0d0d16;
-  --surface: rgba(255, 255, 255, 0.026);
-  --surface-2: rgba(255, 255, 255, 0.045);
-  --line: rgba(212, 175, 55, 0.14);
-  --line-soft: rgba(255, 255, 255, 0.07);
+  /* --- 面 (白を基調にする) --- */
+  --bg: #ffffff;
+  --bg-2: #f6f8fb;
+  --bg-3: #eef2f7;
+  --surface: #ffffff;
+  --surface-2: #f6f8fb;
+  --line: #dfe4ec;
+  --line-soft: #eceff4;
 
-  /* --- Gold --- */
-  --gold: #d4af37;
-  --gold-light: #f7e08c;
-  --gold-pale: #fbf1cf;
-  --gold-deep: #8c6a1e;
-  --gold-dark: #4a3810;
-  --gold-glow: rgba(212, 175, 55, 0.4);
+  /* --- 差し色 (落ち着いた青) ---
+     旧テーマの変数名 (--gold*) をそのまま使っている箇所が多いので、
+     名前は変えずに中身だけ青へ置き換える */
+  --gold: #1a56a8;
+  --gold-light: #2f74d0;
+  --gold-pale: #eaf1fb;
+  --gold-deep: #123f7d;
+  --gold-dark: #0d2f5e;
+  --gold-glow: rgba(26, 86, 168, 0.18);
 
-  --gradient-gold: linear-gradient(
-    118deg,
-    #8c6a1e 0%,
-    #d4af37 22%,
-    #f9ecb8 46%,
-    #d4af37 62%,
-    #a67c22 84%,
-    #f0d67e 100%
-  );
-  --gradient-gold-line: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(212, 175, 55, 0.06) 15%,
-    var(--gold) 50%,
-    rgba(212, 175, 55, 0.06) 85%,
-    transparent 100%
-  );
+  --accent: var(--gold);
+  --accent-weak: var(--gold-pale);
 
-  /* --- Text --- */
-  --text: #ece9e2;
-  --text-dim: #9a978f;
-  --text-faint: #6a6862;
+  --gradient-gold: linear-gradient(120deg, #123f7d 0%, #1a56a8 50%, #2f74d0 100%);
+  --gradient-gold-line: linear-gradient(90deg, transparent 0%, var(--line) 20%, var(--line) 80%, transparent 100%);
 
-  /* --- Type --- */
+  /* --- 文字 --- */
+  --text: #16202c;
+  --text-dim: #566172;
+  --text-faint: #7d8896;
+
+  /* --- 書体 (一般的なビジネスサイトに合わせ、本文も見出しもゴシック) --- */
   --font-jp: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Yu Gothic',
     Meiryo, sans-serif;
   --font-en: 'Inter', var(--font-jp);
-  --font-display: 'Cormorant Garamond', 'Noto Serif JP', serif;
+  --font-display: var(--font-jp);
 
-  /* --- Layout --- */
-  --max: 1240px;
-  --gutter: clamp(20px, 5vw, 64px);
-  --nav-h: 78px;
-  --radius: 4px;
+  /* --- 配置 --- */
+  --max: 1160px;
+  --gutter: clamp(20px, 5vw, 56px);
+  --nav-h: 72px;
+  --radius: 6px;
   --radius-lg: 10px;
 
-  /* --- Motion --- */
+  --shadow-sm: 0 1px 2px rgba(22, 32, 44, 0.06);
+  --shadow: 0 2px 10px rgba(22, 32, 44, 0.07);
+
+  /* --- 動き --- */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
@@ -81,7 +74,7 @@ body {
   font-weight: 400;
   font-size: 16px;
   line-height: 1.9;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -144,16 +137,7 @@ figcaption {
   text-wrap: pretty;
 }
 
-body::before {
-  /* 微細なノイズテクスチャで黒の"深み"を出す */
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
-}
+
 
 h1,
 h2,
@@ -204,7 +188,7 @@ select {
 
 ::selection {
   background: var(--gold);
-  color: #05050a;
+  color: #ffffff;
 }
 
 /* --- Scrollbar --- */
@@ -253,23 +237,14 @@ select {
   position: relative;
 }
 
+/* 差し色の文字。旧テーマの .gold-text も同じ見た目にそろえる */
+.accent-text,
 .gold-text {
-  background: var(--gradient-gold);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
+  color: var(--accent);
 }
 
 .gold-text--shimmer {
-  animation: shimmer 7s linear infinite;
-}
-
-@keyframes shimmer {
-  to {
-    background-position: 200% center;
-  }
+  color: var(--accent);
 }
 
 .eyebrow {
@@ -309,11 +284,12 @@ select {
 
 .section-title .en {
   display: block;
-  font-family: var(--font-display);
-  font-size: clamp(52px, 9vw, 110px);
-  font-weight: 300;
-  line-height: 0.95;
-  letter-spacing: 0.06em;
+  font-family: var(--font-en);
+  font-size: clamp(13px, 1.4vw, 15px);
+  font-weight: 700;
+  line-height: 1.6;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
   opacity: 0.13;
   margin-bottom: -0.28em;
   pointer-events: none;

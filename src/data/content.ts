@@ -282,13 +282,10 @@ export const services: Service[] = [
 ];
 
 /* ------------------------------------------------------------------ *
- * プロダクトカタログ（サブスクリプション）
+ * 自社サービス（公開中）
  *
- * ⚠️ 自社プロダクトは未提供のため、現在このデータは画面に出していない。
- *    ここにあるのは構想段階の案。提供を開始するときは、
- *    実在するプロダクト名・価格・提供状況に差し替えたうえで
- *    Products ページの Coming Soon ブロックと入れ替えること。
- *    （未提供のまま価格を表示すると、事実と異なる表示になってしまう）
+ * **実際に公開しているものだけを載せる。** 広告配信や決済の審査では、
+ * 「誰が何を運営しているか」をこのページから辿れることを見られる。
  * ------------------------------------------------------------------ */
 
 export type Product = {
@@ -298,6 +295,8 @@ export type Product = {
   copy: string;
   description: string;
   features: string[];
+  url: string;
+  urlLabel: string;
   price: string;
   priceNote: string;
   status: "available" | "beta" | "coming";
@@ -305,87 +304,57 @@ export type Product = {
 
 export const products: Product[] = [
   {
-    id: "kotobot",
-    name: "KotoBot",
-    tag: "AI / ナレッジ",
-    copy: "社内のドキュメントに、AIが答える。",
+    id: "kotohub-games",
+    name: "KotoHub Games",
+    tag: "ブラウザゲーム",
+    copy: "インストール不要。開いた瞬間から遊べる。",
     description:
-      "社内マニュアル・規程・議事録を読み込ませるだけで、社員の質問に根拠付きで回答する社内向けAIチャット。ベテランの頭の中にしかなかった知識を、全社の資産に変えます。",
+      "ブラウザだけで遊べるオリジナルゲームを公開しているゲームポータルです。ダウンロードも会員登録も不要で、パソコンからもスマートフォンからもすぐに始められます。3D表現・セーブデータの自動保存・オフライン対応など、Web技術だけでどこまで作れるかを試す自社開発の場でもあります。",
     features: [
-      "PDF / Word / Excel の取り込み",
-      "回答の根拠（出典）を必ず提示",
-      "部署ごとのアクセス権限",
-      "Slack / Teams 連携",
+      "アビス・ダイバー：潜るほど強くなる探索型ローグライト",
+      "シンソード：剣を合成して育てる放置育成ゲーム",
+      "KotoBox：モンスターが暮らす箱庭シミュレーション",
+      "インストール不要・スマートフォン対応・無料で遊べる",
     ],
-    price: "準備中",
-    priceNote: "提供開始時期は未定です",
-    status: "coming",
+    url: "https://games.kotohub.info/",
+    urlLabel: "games.kotohub.info",
+    price: "無料",
+    priceNote: "会員登録なしで遊べます",
+    status: "available",
   },
   {
-    id: "kotodesk",
-    name: "KotoDesk",
-    tag: "BI / ダッシュボード",
-    copy: "経営数字を、毎朝ひと目で。",
+    id: "ai-mate",
+    name: "ai-mate",
+    tag: "AIキャラクター育成",
+    copy: "話しかけるほど、育っていく相棒。",
     description:
-      "販売管理・会計・勤怠などのデータを自動で集約し、経営ダッシュボードとして可視化。Excelでの手集計をやめ、意思決定のスピードを上げます。",
+      "会話を通じてキャラクターを育てるAIサービスです。生成AIとの対話が、そのままキャラクターの成長や関係づくりにつながります。生成AIを「業務ツール」ではなく「日常で触れるもの」として設計した、自社運営のサービスです。",
     features: [
-      "主要SaaS・CSVからの自動連携",
-      "経営／部門別のダッシュボード",
-      "異常値の自動アラート",
-      "PDF定期レポート配信",
+      "生成AIとの会話でキャラクターが育つ",
+      "ブラウザだけで利用可能（インストール不要）",
+      "無料で試せる（一部機能は有料）",
+      "運営者情報・特定商取引法に基づく表示を掲載",
     ],
-    price: "準備中",
-    priceNote: "提供開始時期は未定です",
-    status: "coming",
-  },
-  {
-    id: "kotoflow",
-    name: "KotoFlow",
-    tag: "業務自動化",
-    copy: "その転記作業、もう要りません。",
-    description:
-      "受発注・請求・報告書といった定型業務を自動化するワークフロー基盤。メール添付の処理からシステム間のデータ連携まで、人の手を介さず流します。",
-    features: [
-      "帳票のOCR自動読み取り",
-      "承認フローの電子化",
-      "既存システムとのAPI連携",
-      "処理ログの完全記録",
-    ],
-    price: "準備中",
-    priceNote: "提供開始時期は未定です",
-    status: "coming",
-  },
-  {
-    id: "kotosite",
-    name: "KotoSite",
-    tag: "Web",
-    copy: "速いサイトを、保守込みで。",
-    description:
-      "コーポレートサイトを制作から公開・保守まで月額で提供。表示速度とSEOを最適化したテンプレート基盤で、初期費用を抑えて短期間で立ち上げます。",
-    features: [
-      "独自ドメイン・SSL込み",
-      "更新代行（月2回まで）",
-      "アクセス解析レポート",
-      "常時最新のセキュリティ対応",
-    ],
-    price: "準備中",
-    priceNote: "提供開始時期は未定です",
-    status: "coming",
+    url: "https://aimate.kotohub.info/",
+    urlLabel: "aimate.kotohub.info",
+    price: "無料（一部有料）",
+    priceNote: "料金の詳細はサービス内に掲載しています",
+    status: "available",
   },
 ];
 
 export const productBenefits = [
   {
-    title: "初期費用を抑えて始められる",
-    body: "スクラッチ開発なら数百万円規模になる仕組みを、月額で。まず使ってから判断できます。",
+    title: "作って終わりにしない",
+    body: "自社サービスは公開したあとも運用しています。障害対応・改善・費用の見直しまで、運用側の視点で設計します。",
   },
   {
-    title: "導入は最短数日",
-    body: "既に動いているプロダクトを貸し出す形のため、要件が固まれば短期間で利用開始できます。",
+    title: "新しい技術を実地で試している",
+    body: "生成AI・3D表現・クラウドの構成は、まず自社サービスで動かして確かめています。試していないものは勧めません。",
   },
   {
-    title: "自社仕様へのカスタマイズ可",
-    body: "標準機能で足りない部分は追加開発で対応。将来的な買い切り・ソースコード納品も可能です。",
+    title: "小さく早く出す進め方",
+    body: "企画から公開まで自分たちで回しているため、短い周期で作って直す進め方をそのままお客様の案件にも適用できます。",
   },
 ];
 
@@ -531,7 +500,10 @@ export const businessInfo: { label: string; value: string }[] = [
   { label: "お問い合わせ", value: "work@kotohub.info" },
   // **運営しているサービスを明記する。** 広告配信 (AdMob / AdSense) の審査で
   // 「誰が運営しているか」を辿れるようにしておく
-  { label: "運営サービス", value: "ai-mate（AIキャラクター育成ゲーム）" },
+  {
+    label: "運営サービス",
+    value: "KotoHub Games（ブラウザゲームポータル） / ai-mate（AIキャラクター育成）",
+  },
 ];
 
 /**
@@ -542,9 +514,14 @@ export const businessInfo: { label: string; value: string }[] = [
  */
 export const serviceLegalLinks: { label: string; href: string; note: string }[] = [
   {
+    label: "KotoHub Games",
+    href: "https://games.kotohub.info/",
+    note: "サービス本体（ブラウザゲーム）",
+  },
+  {
     label: "ai-mate",
     href: "https://aimate.kotohub.info/",
-    note: "サービス本体",
+    note: "サービス本体（AIキャラクター育成）",
   },
   {
     label: "事業者情報",
@@ -668,7 +645,7 @@ export const faqs = [
 export const navItems = [
   { to: "/", label: "HOME", labelJa: "ホーム" },
   { to: "/services", label: "SERVICES", labelJa: "事業内容" },
-  { to: "/products", label: "PRODUCTS", labelJa: "プロダクト" },
+  { to: "/products", label: "PRODUCTS", labelJa: "自社サービス" },
   { to: "/strengths", label: "STRENGTHS", labelJa: "強み" },
   { to: "/about", label: "ABOUT", labelJa: "事業者情報" },
   { to: "/founder", label: "FOUNDER", labelJa: "代表紹介", newTab: true },

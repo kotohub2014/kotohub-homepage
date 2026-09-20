@@ -4,62 +4,93 @@ import PageHead from '../components/PageHead';
 import Reveal from '../components/Reveal';
 import CTA from '../components/CTA';
 import { ArrowRight } from '../components/Icons';
-import { productBenefits } from '../data/content';
+import { products, productBenefits } from '../data/content';
 
 /**
- * プロダクトカタログ（準備中）。
+ * 自社サービスの紹介ページ。
  *
- * 自社プロダクトはまだ提供していないため、具体的な製品名・価格は載せない。
- * ここでは「これから用意しようとしている形」だけを説明している。
- * 提供開始したら、この Coming Soon ブロックを製品一覧に差し替える。
+ * **公開しているものだけを載せる。** 広告配信・決済の審査では、
+ * 運営者とサービスがこのページから辿れることを見られるため、
+ * 各サービスへの導線（外部リンク）を必ず置いておく。
  */
 export default function Products() {
   return (
     <div className="page">
       <PageHead
-        eyebrow="Product catalog"
+        eyebrow="Our products"
         en="PRODUCTS"
         title={
           <>
-            作る前に、
-            <span className="gold-text gold-text--shimmer">まず使えるものを。</span>
+            受託だけでなく、
+            <span className="accent-text">自分たちでも作って運営しています。</span>
           </>
         }
-        lead="数百万円規模のスクラッチ開発に踏み切る前に、月額で試せる自社プロダクトを準備しています。まず動くものを現場に入れて効果を確かめる——そんな始め方をご用意していきます。"
+        lead="KotoHub は、お客様のシステムを開発するだけでなく、自社サービスの開発・運営も行っています。企画から設計・開発・公開・運用まで自分たちで回しているからこそ、机上ではない提案ができます。どちらも公開中で、どなたでもご利用いただけます。"
       />
 
-      <section className="section" style={{ paddingTop: 56 }}>
+      {/* --- 公開中のサービス --- */}
+      <section className="section" style={{ paddingTop: 56 }} aria-labelledby="products-heading">
         <div className="container">
           <Reveal>
-            <div className="coming-soon" style={{ marginTop: 0 }}>
-              <p className="coming-soon__label">Coming Soon</p>
-              <p className="coming-soon__title gold-text gold-text--shimmer">準備中です</p>
-              <p className="coming-soon__body">
-                現在ご提供できるのは受託開発のみです。自社プロダクトは開発を進めており、提供開始までもうしばらくお待ちください。「こういうものが月額で使えたら」というご要望は、そのまま開発の優先順位に反映します。
-              </p>
-              <Link to="/contact" className="btn btn--primary btn--sm">
-                要望を伝える
-                <ArrowRight className="btn__arrow" />
-              </Link>
-            </div>
+            <p className="eyebrow">Services in operation</p>
+            <h2 className="section-title" id="products-heading">
+              公開中のサービス
+            </h2>
+            <p className="section-lead">いずれもブラウザだけで利用できます。インストールは不要です。</p>
           </Reveal>
+
+          <div className="product-grid">
+            {products.map((p, i) => (
+              <Reveal key={p.id} delay={i * 0.08}>
+                <article className="product-card">
+                  <header className="product-card__head">
+                    <p className="product-card__tag">{p.tag}</p>
+                    <h3 className="product-card__name">{p.name}</h3>
+                    <p className="product-card__copy">{p.copy}</p>
+                  </header>
+
+                  <p className="product-card__body">{p.description}</p>
+
+                  <ul className="product-card__features">
+                    {p.features.map((f) => (
+                      <li key={f}>{f}</li>
+                    ))}
+                  </ul>
+
+                  <dl className="product-card__meta">
+                    <div>
+                      <dt>料金</dt>
+                      <dd>
+                        {p.price}
+                        <span className="product-card__note">{p.priceNote}</span>
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>公開URL</dt>
+                      <dd>{p.urlLabel}</dd>
+                    </div>
+                  </dl>
+
+                  <a className="btn btn--primary btn--sm" href={p.url} target="_blank" rel="noopener">
+                    {p.name} を開く
+                    <ArrowRight className="btn__arrow" />
+                  </a>
+                </article>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* --- どんな形で提供しようとしているか --- */}
-      <section className="section" style={{ paddingTop: 0 }} aria-labelledby="plan-heading">
+      {/* --- 自社サービスから受託開発へ、どうつながるか --- */}
+      <section className="section" aria-labelledby="why-heading">
         <div className="container">
           <Reveal>
-            <p className="eyebrow">What we are building</p>
-            <h2 className="section-title" id="plan-heading">
-              <span className="en gold-text" aria-hidden="true">
-                Plan
-              </span>
-              目指しているかたち
+            <p className="eyebrow">Why we build our own</p>
+            <h2 className="section-title" id="why-heading">
+              自分たちで運営しているから、話が早い
             </h2>
-            <p className="section-lead">
-              ゼロから作ると、どうしても時間と費用がかかります。それを月額で置き換えられる形にするのが、いま準備している仕組みです。
-            </p>
+            <p className="section-lead">自社サービスの運営で得た知見は、そのままお客様の案件に使えます。</p>
           </Reveal>
 
           <div className="benefit-grid" style={{ marginTop: 44 }}>
@@ -76,52 +107,26 @@ export default function Products() {
         </div>
       </section>
 
-      {/* --- サブスクと受託開発の違い --- */}
-      <section className="section" style={{ paddingTop: 0 }} aria-labelledby="compare-heading">
+      {/* --- 受託開発という選択肢 --- */}
+      <section className="section" style={{ paddingTop: 0 }} aria-labelledby="custom-heading">
         <div className="container">
           <Reveal>
-            <p className="eyebrow">Subscription or Custom</p>
-            <h2 className="section-title" id="compare-heading">
-              サブスクと受託開発、どちらを選ぶか
+            <p className="eyebrow">For your business</p>
+            <h2 className="section-title" id="custom-heading">
+              御社専用のシステムをつくる
             </h2>
             <p className="section-lead">
-              いまお選びいただけるのは受託開発です。将来サブスクをご用意した際に、どちらが向いているかの目安として整理しておきます。
+              上記は当社が運営しているサービスです。御社の業務に合わせたシステム・アプリ・ホームページの開発は
+              <Link to="/services">事業内容</Link>
+              のページをご覧ください。要件定義から設計・開発・運用まで一貫してお受けします。
             </p>
-          </Reveal>
-
-          <Reveal delay={0.08}>
-            <div
-              className="tech"
-              style={{ marginTop: 40, gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))' }}
-            >
-              <div className="tech__col">
-                <p className="tech__cat">SUBSCRIPTION — 貸し出し（準備中）</p>
-                <ul className="dot-list" style={{ marginTop: 6 }}>
-                  <li>初期費用を大きく抑えられる</li>
-                  <li>導入は最短数日〜数週間</li>
-                  <li>保守・アップデートは月額に込み</li>
-                  <li>解約すれば利用は終了する</li>
-                  <li>まず効果を確かめたい場合に最適</li>
-                </ul>
-              </div>
-              <div className="tech__col">
-                <p className="tech__cat">CUSTOM — 受託開発（提供中）</p>
-                <ul className="dot-list" style={{ marginTop: 6 }}>
-                  <li>業務に完全に合わせて設計できる</li>
-                  <li>ソースコードは御社の資産になる</li>
-                  <li>長期的にはコストが逆転しうる</li>
-                  <li>初期費用と開発期間が必要</li>
-                  <li>要件が固まっている場合に最適</li>
-                </ul>
-              </div>
-            </div>
           </Reveal>
         </div>
       </section>
 
       <CTA
-        title="いまは、御社専用に作るところから。"
-        lead="プロダクトの提供開始までは、受託開発でご要望にお応えします。まずはどんな業務を楽にしたいか、お聞かせください。"
+        title="「こういうものが欲しい」から、はじめましょう。"
+        lead="自社サービスで培った開発力で、御社の業務に合わせた仕組みをつくります。ご相談・お見積りは無料です。"
       />
     </div>
   );

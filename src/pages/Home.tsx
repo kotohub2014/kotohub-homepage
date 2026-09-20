@@ -1,4 +1,3 @@
-import { Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -8,11 +7,7 @@ import MarqueeCarousel from '../components/MarqueeCarousel';
 import Counter from '../components/Counter';
 import CTA from '../components/CTA';
 import { ArrowRight, ServiceIcon } from '../components/Icons';
-import { brand, caseStudies, services, stats, strengthEquation, strengths } from '../data/content';
-import { eras } from '../data/eras';
-
-// Three.js は容量が大きいため、体験セクションだけ遅延読み込みする
-const EraJourney = lazy(() => import('../components/experience/EraJourney'));
+import { brand, caseStudies, products, services, stats, strengthEquation, strengths } from '../data/content';
 
 const KEYWORDS = [
   'DX SUPPORT',
@@ -316,50 +311,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ========================= EXPERIENCE ========================= */}
-      <section className="section" id="experience" aria-labelledby="experience-heading">
-        <div className="container">
-          <Reveal className="text-center">
-            <p className="eyebrow eyebrow--center">Experience</p>
-            <h2 className="section-title" id="experience-heading">
-              <span className="en gold-text" aria-hidden="true">
-                Where
-              </span>
-              あなたはどの時代にいますか？
-            </h2>
-            <p className="section-lead">
-              ここまでご紹介した道具は、どれも突然生まれたものではありません。紙と鉛筆から始まり、電卓、PC、クラウドを経て、いまAIにたどり着いています。6つの時代を3D空間で歩きながら、自社がいまどのあたりにいるのかを確かめてみてください。
-            </p>
-          </Reveal>
-        </div>
-
-        <div className="container container--wide" style={{ marginTop: 46 }}>
-          <Reveal>
-            <Suspense fallback={<div className="journey__loading-outer">3D空間を読み込んでいます…</div>}>
-              <EraJourney />
-            </Suspense>
-          </Reveal>
-        </div>
-
-        <div className="container">
-          {/* 3Dを見られない環境でも時代の流れが伝わるようにテキストでも並べる */}
-          <Reveal delay={0.05}>
-            <ol className="era-strip" aria-label="仕事の道具がたどってきた時代">
-              {eras.map((e) => (
-                <li className="era-strip__item" key={e.id}>
-                  <span className="era-strip__no">{e.no}</span>
-                  <span className="era-strip__title">{e.title}</span>
-                  <span className="era-strip__years">{e.years}</span>
-                </li>
-              ))}
-            </ol>
-            <p className="case-note" style={{ marginTop: 22 }}>
-              いまが何時代でも構いません。大事なのは、次の一歩をどこに置くかです。
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
       {/* ========================== STRENGTH ========================== */}
       <section className="section" id="strengths" aria-labelledby="strengths-heading">
         <div className="container">
@@ -438,30 +389,41 @@ export default function Home() {
       <section className="section" id="products" aria-labelledby="products-heading">
         <div className="container">
           <Reveal className="text-center">
-            <p className="eyebrow eyebrow--center">Product catalog</p>
+            <p className="eyebrow eyebrow--center">Our products</p>
             <h2 className="section-title" id="products-heading">
-              <span className="en gold-text" aria-hidden="true">
+              <span className="en accent-text" aria-hidden="true">
                 Products
               </span>
-              作る前に、まず使えるものを。
+              自社でも、作って運営しています。
             </h2>
             <p className="section-lead">
-              スクラッチ開発に踏み切る前に、月額で試せる自社プロダクトを準備しています。初期費用を抑えて始められる選択肢を、近日中にご用意します。
+              受託開発だけでなく、自社サービスの企画・開発・運用も行っています。どちらもブラウザだけで使えます。
             </p>
           </Reveal>
 
-          <Reveal delay={0.08}>
-            <div className="coming-soon">
-              <p className="coming-soon__label">Coming Soon</p>
-              <p className="coming-soon__title gold-text gold-text--shimmer">準備中です</p>
-              <p className="coming-soon__body">
-                現在は受託開発でのご提供のみとなります。「こういうものが月額で使えたら」というご要望があれば、ぜひお聞かせください。プロダクト化の検討材料にさせていただきます。
-              </p>
-              <Link to="/contact" className="btn btn--ghost btn--sm">
-                要望を伝える
-                <ArrowRight className="btn__arrow" />
-              </Link>
-            </div>
+          <div className="product-grid product-grid--home">
+            {products.map((p, i) => (
+              <Reveal key={p.id} delay={i * 0.08}>
+                <article className="product-card">
+                  <header className="product-card__head">
+                    <p className="product-card__tag">{p.tag}</p>
+                    <h3 className="product-card__name">{p.name}</h3>
+                    <p className="product-card__copy">{p.copy}</p>
+                  </header>
+                  <p className="product-card__body">{p.description}</p>
+                  <a className="btn btn--primary btn--sm" href={p.url} target="_blank" rel="noopener">
+                    {p.name} を開く
+                    <ArrowRight className="btn__arrow" />
+                  </a>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal delay={0.16}>
+            <p className="case-note" style={{ marginTop: 26, textAlign: 'center' }}>
+              <Link to="/products">サービスの詳細を見る</Link>
+            </p>
           </Reveal>
         </div>
       </section>
