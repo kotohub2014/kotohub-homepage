@@ -20,10 +20,15 @@ export default function Reveal({ children, delay = 0, className = '', as: Tag = 
     const el = ref.current;
     if (!el) return;
 
+    // 念のための保険: 3 秒たっても出ていなければ、そのまま表示する。
+    // (タブが裏にある・observer が動かない環境でも本文が消えないように)
+    const fallback = window.setTimeout(() => el.classList.add('is-visible'), 3000);
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           el.classList.add('is-visible');
+          window.clearTimeout(fallback);
           observer.disconnect();
         }
       },
@@ -31,7 +36,10 @@ export default function Reveal({ children, delay = 0, className = '', as: Tag = 
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      window.clearTimeout(fallback);
+      observer.disconnect();
+    };
   }, []);
 
   return (
