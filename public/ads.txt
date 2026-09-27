@@ -13,3 +13,24 @@
 # ads.txt が**サブドメインではなくルートドメイン (kotohub.info) を先に見る**
 # ため。あちら側にも同じものを置いてあるが、**正はこちら。**
 google.com, pub-5617639737699413, DIRECT, f08c47fec0942fa0
+
+# ---- 忍者AdMax (2026-09-27) ----
+# 管理画面の「ads.txt」に出ている行をそのまま写す。**書き換えない。**
+#   adm.shinobi.jp, 231781, DIRECT   … 自分のアカウント (直接契約)
+#   それ以外 (RESELLER)               … AdMax が広告を売ってもらっている会社
+# 管理画面で行が増えたら、ここも同じに直す (足りないと、その会社の広告が止まる)。
+adm.shinobi.jp,231781,DIRECT
+33across.com,0010b00002Mq2FYAAZ,RESELLER,bbea06d9c4d2853c
+33across.com,0013300001r0t9mAAA,RESELLER,bbea06d9c4d2853c
+33across.com,0014000001aXjnGAAS,RESELLER,bbea06d9c4d2853c
+Advertising.com,19011,RESELLER
+Advertising.com,3500,RESELLER
+EMXDGT.com,1284,RESELLER,1e1d41537f7cad7f
+EMXDGT.com,1527,RESELLER,1e1d41537f7cad7f
+EMXDGT.com,273,RESELLER,1e1d41537f7cad7f
+EMXDGT.com,68,RESELLER,1e1d41537f7cad7f
+
+# ---- サブドメイン ----
+# **広告を出しているのは aimate.kotohub.info。** 買い手はまずこのルートの ads.txt を見るので、
+# 同じ販売者をここにも並べたうえで、サブドメインの ads.txt も読むよう宣言しておく。
+subdomain=aimate.kotohub.info
